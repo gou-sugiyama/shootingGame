@@ -17,8 +17,5 @@ public:
 	AbstractScene* Update();
 	//•`‰æ
 	void Draw()const { scene->Draw(); }
-}
-	
-
 };
-
+	

@@ -1,11 +1,13 @@
 #include "SceneManager.h"
+#include "TitleScene.h"
+#include "GameMainScene.h"
 
 //-----------------------------------
 // コンストラクタ
 //-----------------------------------
 SceneManager::SceneManager()
 {
-	scene = nullptr;//new TitleScene();
+	scene = new GameMainScene();
 }
 
 
