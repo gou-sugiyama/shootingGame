@@ -24,5 +24,6 @@ public:
 
     //“–‚½‚è”»’è‚ÌŒÄ‚Ño‚µ
     void HitCheck() {}
+
 };
 

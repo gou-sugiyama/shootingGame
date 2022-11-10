@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BulletsBase.cpp" />
     <ClCompile Include="CharaBase.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ItemBase.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene\AbstractScene.cpp" />
     <ClCompile Include="Scene\GameMainScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -29,7 +33,11 @@
     <ClCompile Include="Location.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletsBase.h" />
     <ClInclude Include="CharaBase.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ItemBase.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\AbstractScene.h" />
     <ClInclude Include="Scene\GameMainScene.h" />
