@@ -23,7 +23,13 @@ AbstractScene* GameMainScene::Update()
 //--------------------------------
 void GameMainScene::Draw()const
 {
-	DrawString(0, 0, "GameMainScene", 0xFFFFFF);
+	//デバッグ用ブロック
+	{
+		int i = 0;
+		DrawString(0, 20*i++, "GameMainScene", 0xFFFFFF);
+
+	}
+
 }
 
 //--------------------------------
