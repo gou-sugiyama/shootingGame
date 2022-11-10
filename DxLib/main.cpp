@@ -1,4 +1,6 @@
 #include"DxLib.h"
+#include "common.h"
+//#include "KeyManager.h"
 #include "Scene/SceneManager.h"
 
 /***********************************************
@@ -12,7 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	ChangeWindowMode(TRUE);		// ウィンドウモードで起動
 
-	SetGraphMode(1280, 720, 32);
+	SetGraphMode(D_SCREEN_SIZE_X, D_SCREEN_SIZE_Y, 32);
 
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
@@ -35,10 +37,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		sceneManager->Update() != nullptr
 		)
 	{
+		KeyManager::Update();
 		ClearDrawScreen();
 
 		sceneManager->Draw();
 
+		if (KeyManager::OnKeyClicked(KEY_INPUT_Z))
+		{
+			DrawString(100, 100, "ぽえぽえぽえ～", 0xFFFFFF);
+		}
+		if (KeyManager::OnKeyReleased(KEY_INPUT_Z))
+		{
+			DrawString(100, 100, "はにゃん？", 0xFFFFFF);
+		}
+		if (KeyManager::OnKeyPressed(KEY_INPUT_Z))
+		{
+			DrawString(100, 100, "ばっくばっくばく～ん！", 0xFFFFFF);
+		}
+		
 	 
 
 		ScreenFlip();			// 裏画面の内容を表画面に反映
