@@ -1,20 +1,20 @@
 #pragma once
 #include "AbstractScene.h"
-#include "../Location.h"
+#include "../Player.h"
 
 class GameMainScene :
     public AbstractScene
 {
 private:
 
-    //*player
+    Player* player;
     //*enemy[]
 
 public:
     //コンストラクタ
     GameMainScene();
     //デストラクタ
-    ~GameMainScene() {}
+    ~GameMainScene();
 
     //更新
     AbstractScene* Update()override;

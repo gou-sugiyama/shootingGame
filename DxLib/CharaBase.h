@@ -3,7 +3,7 @@
 class CharaBase :
     public SphereCollider
 {
-private:
+protected:
     //*bullets
     //speed
     //image

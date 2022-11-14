@@ -4,12 +4,12 @@ class Enemy :
     public CharaBase
 {
 private:
-    //hp
-    //point
+    int hp;
+    int point;
 
 public:
-    void Update() override {}
-    void Draw() override {}
+    void Update() override;
+    void Draw() override;
     void Hit() override {}
     void HpCheck() {}
     int GetPoint() {}

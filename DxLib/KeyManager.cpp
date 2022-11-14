@@ -25,6 +25,9 @@ void KeyManager::Update()
 
 }
 
+
+//キーボード入力　引数：INPUT_KEY_anyKey
+
 //----------------
 // キークリック
 //----------------
@@ -52,12 +55,15 @@ bool KeyManager::OnKeyPressed(int Key)
 	return ret;
 }
 
+//マウス入力　引数：MOUSE_INPUT_anyState
+
 //----------------
 // マウスクリック
 //----------------
 bool KeyManager::OnMouseClicked(int Key)
 {
-	return true;
+	bool ret = ~oldMouse & nowMouse;
+	return ret;
 }
 
 //----------------
@@ -65,8 +71,8 @@ bool KeyManager::OnMouseClicked(int Key)
 //----------------
 bool KeyManager::OnMouseReleased(int Key)
 {
-
-	return true;
+	bool ret = oldMouse & ~nowMouse;
+	return ret;
 }
 
 //----------------
@@ -74,6 +80,6 @@ bool KeyManager::OnMouseReleased(int Key)
 //----------------
 bool KeyManager::OnMousePressed(int Key)
 {
-
-	return true;
+	bool ret = oldMouse & nowMouse;
+	return ret;
 }

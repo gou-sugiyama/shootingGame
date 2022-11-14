@@ -42,21 +42,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		sceneManager->Draw();
 
-		if (KeyManager::OnKeyClicked(KEY_INPUT_Z))
-		{
-			DrawString(100, 100, "ぽえぽえぽえ～", 0xFFFFFF);
-		}
-		if (KeyManager::OnKeyReleased(KEY_INPUT_Z))
-		{
-			DrawString(100, 100, "はにゃん？", 0xFFFFFF);
-		}
-		if (KeyManager::OnKeyPressed(KEY_INPUT_Z))
-		{
-			DrawString(100, 100, "ばっくばっくばく～ん！", 0xFFFFFF);
-		}
-		
-	 
-
 		ScreenFlip();			// 裏画面の内容を表画面に反映
 	}
 

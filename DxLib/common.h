@@ -1,4 +1,6 @@
 #pragma once
+//外部参照
+#include "DxLib.h"
 
 //静的クラスのヘッダー読み込み
 #include "KeyManager.h"

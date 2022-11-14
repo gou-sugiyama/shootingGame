@@ -3,7 +3,7 @@
 
 class SphereCollider
 {
-private:
+protected:
 	Location location;
 	float radius;
 
