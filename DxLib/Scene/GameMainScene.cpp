@@ -7,6 +7,15 @@
 GameMainScene::GameMainScene()
 {
 	player = new Player();
+	for (int i = 0; i < D_ENEMY_MAX; i++)
+	{
+		enemy[i] = nullptr;
+	}
+	
+
+
+	//デバッグ用
+	enemy[0] = new Enemy();
 }
 
 //--------------------------------
@@ -15,6 +24,10 @@ GameMainScene::GameMainScene()
 GameMainScene::~GameMainScene()
 {
 	delete player;
+	for (int i = 0; i < D_ENEMY_MAX; i++)
+	{
+		delete enemy[i];
+	}
 }
 
 //--------------------------------
@@ -23,6 +36,13 @@ GameMainScene::~GameMainScene()
 AbstractScene* GameMainScene::Update()
 {
 	player->Update();
+	for (int i = 0; i < D_ENEMY_MAX; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Update();
+		}
+	}
 
 	return this;
 }
@@ -33,6 +53,13 @@ AbstractScene* GameMainScene::Update()
 void GameMainScene::Draw()const
 {
 	player->Draw();
+	for (int i = 0; i < D_ENEMY_MAX; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Draw();
+		}
+	}
 
 	//デバッグ用ブロック
 	{

@@ -1,6 +1,9 @@
 #pragma once
 #include "AbstractScene.h"
 #include "../Player.h"
+#include "../Enemy.h"
+
+#define D_ENEMY_MAX 10
 
 class GameMainScene :
     public AbstractScene
@@ -8,7 +11,7 @@ class GameMainScene :
 private:
 
     Player* player;
-    //*enemy[]
+    Enemy* enemy[D_ENEMY_MAX];
 
 public:
     //コンストラクタ
