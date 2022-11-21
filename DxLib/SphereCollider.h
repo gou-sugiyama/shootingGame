@@ -8,8 +8,11 @@ protected:
 	float radius;
 
 public:
+	SphereCollider();
+	~SphereCollider();
+
 	//“–‚½‚è”»’è
-	void HitSphere() {}
+	bool HitSphere(SphereCollider* collider);
 
 	Location GetLocation() { return location; }
 	void SetLocation(Location location) { this->location = location; }

@@ -6,16 +6,18 @@ typedef struct  Location
 
 	Location operator +(Location location)
 	{
-		x += location.x;
-		y += location.y;
-		return *this;
+		Location w;
+		w.x = this->x + location.x;
+		w.y = this->y + location.y;
+		return w;
 	}
 
 	Location operator -(Location location)
 	{
-		x -= location.x;
-		y -= location.y;
-		return *this;
+		Location w;
+		w.x = this->x - location.x;
+		w.y = this->y - location.y;
+		return w;
 	}
 }Location;
 
