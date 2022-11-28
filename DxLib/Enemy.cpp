@@ -8,7 +8,7 @@ Enemy::Enemy()
 {
 	//SphereCollider‚Ì‰Šú‰»
 	location.x = D_SCREEN_SIZE_X / 2;
-	location.y = 0;
+	location.y = 100;
 
 	radius = D_ENEMY_RADIUS;
 
@@ -33,7 +33,7 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
-	Move();
+	//Move();
 
 }
 

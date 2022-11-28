@@ -9,6 +9,7 @@ class GameMainScene :
     public AbstractScene
 {
 private:
+    bool debug = false; //TODO:消す　デバッグ
 
     Player* player;
     Enemy* enemy[D_ENEMY_MAX];
@@ -26,7 +27,8 @@ public:
 
 
     //当たり判定の呼び出し
-    void HitCheck() {}
+    void HitCheck();
+    bool HitCheck_enemy_player();
 
 };
 
