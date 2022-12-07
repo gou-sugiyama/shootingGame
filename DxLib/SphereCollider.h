@@ -9,6 +9,7 @@ protected:
 
 public:
 	SphereCollider();
+	SphereCollider(Location* pLocation, float* pRadius);
 	~SphereCollider();
 
 	//“–‚½‚è”»’è

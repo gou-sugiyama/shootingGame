@@ -12,6 +12,15 @@ SphereCollider::SphereCollider()
 }
 
 //----------------------
+// コンストラクタ
+//----------------------
+SphereCollider::SphereCollider(Location* pLocation, float* pRadius)
+{
+	location = *pLocation;
+	radius = *pRadius;
+}
+
+//----------------------
 // デストラクタ
 //----------------------
 SphereCollider::~SphereCollider()

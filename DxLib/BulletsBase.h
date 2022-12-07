@@ -21,14 +21,15 @@ class BulletsBase :
 private:
     int damage = 0;
 protected:
-    Location speed = { 0,0 };
-
     //ベクトル
     int angle = 0;      //角度
-    float amount = 0;   //量
+    float speed = 0;    //量
+
 
 public:
     BulletsBase();
+    BulletsBase(Location* pLocation, float* pRadius,
+        int* damage, int* angle, float* speed);
     ~BulletsBase();
 
     virtual void Update() = 0;
