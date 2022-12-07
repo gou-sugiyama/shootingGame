@@ -24,18 +24,19 @@ SphereCollider::~SphereCollider()
 //--------------------------------------------------
 bool SphereCollider::HitSphere(SphereCollider* collider)
 {
+	bool isHit=false;
+
 	//距離を測る
 	Location distance = this->location - collider->location;
 	//二つのコリジョンが接したときの距離
 	float range = this->radius + collider->radius;
 
 	//距離2乗がrange2乗以下だったら当たってる
-	if ((pow((double)distance.x, 2.0) + pow((double)distance.y, 2.0)) <= range)//distanceのx2乗+y2乗<=range
+	if ((powf(distance.x, 2.0f) + powf(distance.y, 2.0f)) <= powf(range,2.0f))//distanceのx2乗+y2乗<=rangeの2乗
 	{
-		return true;
+		isHit = true;
 	}
 
-	return false;
+	return isHit;
 
-	//TODO:デバッグ　当たり判定 true or false
 }

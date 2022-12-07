@@ -79,7 +79,7 @@ void GameMainScene::Draw()const
 		//‹——£‚ğ‘ª‚é
 		Location distance = player->GetLocation() - enemy[0]->GetLocation();
 		//“ñ‚Â‚ÌƒRƒŠƒWƒ‡ƒ“‚ªÚ‚µ‚½‚Æ‚«‚Ì‹——£
-		float range = 10;
+		float range = 30;
 
 		//‹——£‚ªrangeˆÈ‰º‚¾‚Á‚½‚ç“–‚½‚Á‚Ä‚é
 		distance.x = pow((double)distance.x, 2.0);
