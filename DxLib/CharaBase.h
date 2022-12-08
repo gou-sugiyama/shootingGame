@@ -5,7 +5,7 @@ class CharaBase :
 {
 protected:
     //*bullets
-    //speed
+    float speed = 0;
     //image
 
 public:

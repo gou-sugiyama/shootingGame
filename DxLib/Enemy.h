@@ -14,14 +14,21 @@ private:
     int hp;
     int point;
 
+    //ˆÚ“®—p
+    float moveAngle = 0;
+    bool moving = false;   //ˆÚ“®’†‚È‚çtrue
+
+
 public:
-    Enemy();
+    Enemy(Location* pLocation);
     ~Enemy();
 
     void Update() override;
     void Draw() override;
 
-    void Move();
+    virtual void Move();
+    bool MoveToLocation(Location* pLocation, double frame);
+    void MoveStraght() {}
     void Hit() override {}
     void HpCheck() {}
     int GetPoint() {}

@@ -45,7 +45,7 @@ void BulletsBase::Move()
 	//角度が0なら真上に動く それ以外なら計算する
 	if (angle == 0)
 	{
-		location.y -= amount;
+		location.y -= speed;
 	}
 	else
 	{

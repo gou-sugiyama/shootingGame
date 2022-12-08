@@ -30,6 +30,7 @@ public:
     BulletsBase();
     BulletsBase(Location* pLocation, float* pRadius,
         int* damage, int* angle, float* speed);
+    //TODO:引数付きコンストラクタの中身を書く。
     ~BulletsBase();
 
     virtual void Update() = 0;

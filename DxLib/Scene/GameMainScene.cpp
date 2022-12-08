@@ -12,10 +12,9 @@ GameMainScene::GameMainScene()
 		enemy[i] = nullptr;
 	}
 	
-
-
 	//デバッグ用
-	enemy[0] = new Enemy();
+	Location enemyLocation = { D_SCREEN_SIZE_X / 2,0 };
+	enemy[0] = new Enemy(&enemyLocation);
 }
 
 //--------------------------------
