@@ -10,6 +10,10 @@ Location moveLocation[4] =
 	{(D_ENEMY_RADIUS * 2),D_SCREEN_SIZE_Y / 5}
 };
 
+
+int dx = 640;
+int dy = -10;
+
 //-------------------------------
 // コンストラクタ
 //-------------------------------
@@ -26,6 +30,9 @@ Enemy::Enemy(Location* pLocation)
 	hp = D_ENEMY_HP;
 	point = D_ENEMY_POINT;
 
+	locationIndex = 0;
+	targetLocation = moveLocation[locationIndex];
+
 }
 
 //-------------------------------
@@ -41,8 +48,20 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
-	Move();
+	if (location != targetLocation)
+	{
+		Move();
+	}
+	else
+	{
+		UpdateTargetLocation();
+	}
 
+
+	Location a;
+	a.x = dx;
+	a.y = dy;
+	GetRad(&a);
 }
 
 //-------------------------------
@@ -64,34 +83,48 @@ void Enemy::Draw()
 //-------------------------------
 void Enemy::Move()
 {
-	if (moving)
-	{
-		MoveToLocation(&moveLocation[1], 60 * 1);
-	}
-	else
-	{
-		Location distance = location - moveLocation[1];
-		//moveAngle = atan2f(distance.x, distance.y);
-		float y = sqrtf(3.0f);
-		float x = 1;
-		moveAngle = atan2f(x,y);
-		float deg = 360 / M_PI * moveAngle;
-		deg = deg;
+	MoveStraght(1);
 
-	}
 }
 
 //-----------------------------------------------------------
-// 指定された座標に移動する　フレーム数が0なら距離から計算
+// 自分の位置から、引数の座標までの角度を求める（ラジアン）
 //-----------------------------------------------------------
-bool Enemy::MoveToLocation(Location* pLocation, double frame)
+float Enemy::GetRad(Location* pLocation)
 {
-	bool arrived = false; //指定された座標に到着したか
-	if (!moving)
+	float rad = 999;
+	Location distance = location - *pLocation;
+
+	 rad =  atan2f(distance.x, distance.y);
+
+	//角度を求めるならこっち↓
+	//deg = rad * (180 / M_PI);
+
+	return rad;
+}
+
+//-----------------------------------------------------------
+// 角度に応じて真っすぐ移動する
+//-----------------------------------------------------------
+void Enemy::MoveStraght(float angle)
+{
+	location.x += cos(90/(180/M_PI));
+	location.y += sin(90 / (180 / M_PI));
+}
+
+//-----------------------------------------------------------
+// 目標座標の更新 引数：新しい目的座標
+//-----------------------------------------------------------
+void Enemy::UpdateTargetLocation()
+{
+	if (locationIndex < D_ENEMY_MOVELOOP_END)
 	{
+		locationIndex++;
+	}
+	else
+	{
+		locationIndex -= (D_ENEMY_MOVELOOP_END - D_ENEMY_MOVELOOP_START);
 	}
 
-
-
-	return arrived;
+	targetLocation = moveLocation[locationIndex];
 }

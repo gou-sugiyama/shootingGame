@@ -19,5 +19,18 @@ typedef struct  Location
 		w.y = this->y - location.y;
 		return w;
 	}
+
+
+	bool operator !=(Location location)
+	{
+		bool ret = true;
+		//‚Ç‚¿‚ç‚©ˆê‚Â‚Å‚à“™‚µ‚¯‚ê‚Îfalse‚ð•Ô‚·
+		ret = (!(this->x == location.x) || !(this->y == location.y));
+	  
+
+		return ret;
+	}
+
+
 }Location;
 

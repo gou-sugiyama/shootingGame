@@ -7,6 +7,9 @@
 #define D_ENEMY_HP 10
 #define D_ENEMY_POINT 100
 
+#define D_ENEMY_MOVELOOP_START 2
+#define D_ENEMY_MOVELOOP_END 3
+
 class Enemy :
     public CharaBase
 {
@@ -18,6 +21,9 @@ private:
     float moveAngle = 0;
     bool moving = false;   //à⁄ìÆíÜÇ»ÇÁtrue
 
+    int locationIndex;          //ñ⁄ìIç¿ïWÇÃìYÇ¶éöÇ…égÇ§
+    Location targetLocation;
+
 
 public:
     Enemy(Location* pLocation);
@@ -27,8 +33,9 @@ public:
     void Draw() override;
 
     virtual void Move();
-    bool MoveToLocation(Location* pLocation, double frame);
-    void MoveStraght() {}
+    float GetRad(Location* pLocation);
+    void MoveStraght(float angle);
+    void UpdateTargetLocation();
     void Hit() override {}
     void HpCheck() {}
     int GetPoint() {}
