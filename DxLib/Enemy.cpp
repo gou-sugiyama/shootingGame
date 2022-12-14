@@ -13,6 +13,7 @@ Location moveLocation[4] =
 
 int dx = 640;
 int dy = -10;
+Location a;
 
 //-------------------------------
 // コンストラクタ
@@ -32,6 +33,7 @@ Enemy::Enemy(Location* pLocation)
 
 	locationIndex = 0;
 	targetLocation = moveLocation[locationIndex];
+	SetMouseDispFlag(TRUE);
 
 }
 
@@ -50,18 +52,21 @@ void Enemy::Update()
 {
 	if (location != targetLocation)
 	{
-		Move();
+		//Move();
 	}
 	else
 	{
 		UpdateTargetLocation();
 	}
 
-
-	Location a;
-	a.x = dx;
-	a.y = dy;
-	GetRad(&a);
+	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
+	{
+		int mouseX = 0;
+		int mouseY = 0;
+		GetMousePoint(&mouseX,&mouseY);
+		a.x = mouseX;
+		a.y = mouseY;
+	}
 }
 
 //-------------------------------
@@ -75,6 +80,16 @@ void Enemy::Draw()
 	{
 		DrawCircle(moveLocation[i].x, moveLocation[i].y, radius, 0x55AAAA);
 	}
+
+#define DEBUG
+#ifdef DEBUG
+	{
+		int i = 0;
+		DrawFormatString(0, 200 + i++ * 20, 0xffffff, "yの移動量 sin() = %.1f", sin(GetRadian(&a)));
+		DrawFormatString(0, 200 + i++ * 20, 0xffffff, "xの移動量 cos() = %.1f", cos(GetRadian(&a)));
+	}
+#endif // DEBUG
+
 }
 
 
@@ -90,15 +105,17 @@ void Enemy::Move()
 //-----------------------------------------------------------
 // 自分の位置から、引数の座標までの角度を求める（ラジアン）
 //-----------------------------------------------------------
-float Enemy::GetRad(Location* pLocation)
+float Enemy::GetRadian(Location* pLocation)
 {
 	float rad = 999;
 	Location distance = location - *pLocation;
 
+	
 	 rad =  atan2f(distance.x, distance.y);
 
 	//角度を求めるならこっち↓
-	//deg = rad * (180 / M_PI);
+	float deg = rad * (180 / M_PI);
+	deg = deg;
 
 	return rad;
 }

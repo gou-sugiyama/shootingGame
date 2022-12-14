@@ -13,7 +13,7 @@ GameMainScene::GameMainScene()
 	}
 	
 	//デバッグ用
-	Location enemyLocation = { D_SCREEN_SIZE_X / 2,0 };
+	Location enemyLocation = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
 	enemy[0] = new Enemy(&enemyLocation);
 }
 

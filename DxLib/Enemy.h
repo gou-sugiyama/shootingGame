@@ -33,7 +33,7 @@ public:
     void Draw() override;
 
     virtual void Move();
-    float GetRad(Location* pLocation);
+    float GetRadian(Location* pLocation);
     void MoveStraght(float angle);
     void UpdateTargetLocation();
     void Hit() override {}
