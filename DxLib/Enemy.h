@@ -39,5 +39,10 @@ public:
     void Hit() override {}
     void HpCheck() {}
     int GetPoint() {}
+
+
+    /////////////////
+    void Move_t();
+    /////////////////
 };
 
