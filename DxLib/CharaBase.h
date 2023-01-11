@@ -6,7 +6,7 @@ class CharaBase :
 protected:
     //*bullets
     Location speed_t = { 1,1 };
-    float speed = 0;
+    float speed = 1;
     //image
 
 public:

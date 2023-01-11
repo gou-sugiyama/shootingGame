@@ -34,7 +34,7 @@ public:
 
     virtual void Move();
     float GetRadian(Location* pLocation);
-    void MoveStraght(float angle);
+    void MoveStraght(float radian);
     void UpdateTargetLocation();
     void Hit() override {}
     void HpCheck() {}

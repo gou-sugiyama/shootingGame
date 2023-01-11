@@ -74,6 +74,7 @@ Enemy::Enemy(Location* pLocation)
 	targetLocation = moveLocation[locationIndex];
 	SetMouseDispFlag(TRUE);
 
+
 }
 
 //-------------------------------
@@ -89,10 +90,10 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
-	Move_t();
+	//Move_t();
 	if (location != targetLocation)
 	{
-		//Move();
+		Move();
 	}
 	else
 	{
@@ -125,6 +126,8 @@ void Enemy::Draw()
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.x : %.1lf", location.x);
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.y : %.1lf", location.y);
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "next[%d]:%d", current,next_t[current]);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "moveAngle : %.1lf", moveAngle);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "座標aとの角度：%.1lf", GetRadian(&a));
 	}
 	for (int i = 0; i < 4; i++)
 	{
@@ -141,9 +144,16 @@ void Enemy::Draw()
 //-------------------------------
 void Enemy::Move()
 {
-	MoveStraght(1);
-
+	MoveStraght(GetRadian(&a));
 }
+
+/****************
+*  radianメモ   *                
+*  上：-1.57    *
+*  右：0        *
+*  下：1.57     *
+*  左：3.14     *
+*****************/
 
 //-----------------------------------------------------------
 // 自分の位置から、引数の座標までの角度を求める（ラジアン）
@@ -151,25 +161,21 @@ void Enemy::Move()
 float Enemy::GetRadian(Location* pLocation)
 {
 	float rad = 999;
-	Location distance = location - *pLocation;
+	Location distance = *pLocation - location;
 
-	
-	 rad =  atan2f(distance.x, distance.y);
-
-	//角度を求めるならこっち↓
-	float deg = rad * (180 / M_PI);
-	deg = deg;
+	//ラジアンを求める
+	rad =  atan2f(distance.y, distance.x);
 
 	return rad;
 }
 
 //-----------------------------------------------------------
-// 角度に応じて真っすぐ移動する
+// 角度に応じて真っすぐ移動する (ラジアン)
 //-----------------------------------------------------------
-void Enemy::MoveStraght(float angle)
+void Enemy::MoveStraght(float radian)
 {
-	location.x += cos(90/(180/M_PI));
-	location.y += sin(90 / (180 / M_PI));
+	location.x += speed * cos(radian);
+	location.y += speed * sin(radian);
 }
 
 //-----------------------------------------------------------
