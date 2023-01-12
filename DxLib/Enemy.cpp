@@ -11,9 +11,6 @@ Location moveLocation[4] =
 };
 
 
-int dx = 640;
-int dy = -10;
-Location a;
 
 ////////////////////
 struct MoveInformation
@@ -36,21 +33,21 @@ MoveInformation moveInfo[10] =
 
 };
 
-Location locations_t[3] =
+Location locations[3] =
 {
-	{640,   150},
+	{   640,150},
 	{1200.4,150},
-	{ 80.2, 150},
+	{  80.2,150},
 };
 
-int next_t[3] =
+int next[3] =
 {
 	1,
 	2,
 	1
 };
 
-int current = 0;
+int current = 1;
 /////////////////////
 
 
@@ -70,8 +67,6 @@ Enemy::Enemy(Location* pLocation)
 	hp = D_ENEMY_HP;
 	point = D_ENEMY_POINT;
 
-	locationIndex = 0;
-	targetLocation = moveLocation[locationIndex];
 	SetMouseDispFlag(TRUE);
 
 
@@ -91,22 +86,13 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	//Move_t();
-	if (location != targetLocation)
+	if (location != locations[current])
 	{
 		Move();
 	}
 	else
 	{
-		UpdateTargetLocation();
-	}
-
-	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
-	{
-		int mouseX = 0;
-		int mouseY = 0;
-		GetMousePoint(&mouseX,&mouseY);
-		a.x = mouseX;
-		a.y = mouseY;
+		current = next[current];
 	}
 }
 
@@ -121,17 +107,15 @@ void Enemy::Draw()
 #ifdef DEBUG
 	{
 		int i = 0;
-		DrawFormatString(0, 200 + i++ * 20, 0xffffff, "yの移動量 sin() = %.1f", sin(GetRadian(&a)));
-		DrawFormatString(0, 200 + i++ * 20, 0xffffff, "xの移動量 cos() = %.1f", cos(GetRadian(&a)));
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.x : %.1lf", location.x);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.y : %.1lf", location.y);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "next[%d]:%d", current,next_t[current]);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "moveAngle : %.1lf", moveAngle);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "座標aとの角度：%.1lf", GetRadian(&a));
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.x : %.1lf", GetLocation().x);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.y : %.1lf", GetLocation().y);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "locations[%d].x : %.1lf", current,locations[current].x);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "locations[%d].y : %.1lf", current,locations[current].y);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "next[%d]:%d", current,next[current]);
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		DrawCircle(moveLocation[i].x, moveLocation[i].y, radius, 0x55AAAA);
+		DrawCircle(locations[i].x, locations[i].y, radius, 0x55AAAA);
 	}
 
 #endif // DEBUG
@@ -144,7 +128,17 @@ void Enemy::Draw()
 //-------------------------------
 void Enemy::Move()
 {
-	MoveStraght(GetRadian(&a));
+	//MoveStraght(GetRadian(&locations[current]));
+
+	MoveStraght(moveAngle);
+
+	moveControlTime++;
+	if (moveControlTime % 15 == 0)
+	{
+		moveAngle += M_PI / 12;
+	}
+	
+
 }
 
 /****************
@@ -174,83 +168,104 @@ float Enemy::GetRadian(Location* pLocation)
 //-----------------------------------------------------------
 void Enemy::MoveStraght(float radian)
 {
-	location.x += speed * cos(radian);
-	location.y += speed * sin(radian);
+	Location nextLocation = GetLocation();
+	Location distance = locations[current] - GetLocation();
+
+	//y座標の移動
+	if (nextLocation.y != locations[current].y)
+	{
+		if (fabsf(distance.y) > fabsf(speed * sinf(radian)))
+		{
+			nextLocation.y += (speed * sinf(radian));
+		}
+		else
+		{
+			nextLocation.y = locations[current].y;
+		}
+	}
+
+	//x座標の移動
+	if (nextLocation.x != locations[current].x)
+	{
+		if (fabsf(distance.x) > fabsf(speed * cosf(radian)))
+		{
+			nextLocation.x += speed * cosf(radian);
+		}
+		else
+		{
+			nextLocation.x = locations[current].x;
+		}
+	}
+
+	SetLocation(nextLocation);
 }
 
-//-----------------------------------------------------------
-// 目標座標の更新 引数：新しい目的座標
-//-----------------------------------------------------------
-void Enemy::UpdateTargetLocation()
+
+//----------------------------------------
+// 目的座標にいるか調べる
+//----------------------------------------
+bool Enemy::CheckArrival()
 {
-	if (locationIndex < D_ENEMY_MOVELOOP_END)
-	{
-		locationIndex++;
-	}
-	else
-	{
-		locationIndex -= (D_ENEMY_MOVELOOP_END - D_ENEMY_MOVELOOP_START);
-	}
+	bool isTargetLocation = false;
 
-	targetLocation = moveLocation[locationIndex];
+
+
+	return isTargetLocation;
 }
-
-
-
 
 
 void Enemy::Move_t()
 {
 	Location nextLocation = GetLocation();
 
-	if ((nextLocation.y == locations_t[current].y) &&
-		(nextLocation.x == locations_t[current].x))
+	if ((nextLocation.y == locations[current].y) &&
+		(nextLocation.x == locations[current].x))
 	{
-		current = next_t[current];
+		current = next[current];
 	}
 	else
 	{
-		if (nextLocation.y != locations_t[current].y)
+		if (nextLocation.y != locations[current].y)
 		{
-			if (nextLocation.y < locations_t[current].y)
+			if (nextLocation.y < locations[current].y)
 			{
 				nextLocation.y += speed_t.y;
-				if ((GetLocation().y <= locations_t[current].y) &&
-					(locations_t[current].y <= nextLocation.y))
+				if ((GetLocation().y <= locations[current].y) &&
+					(locations[current].y <= nextLocation.y))
 				{
-					nextLocation.y = locations_t[current].y;
+					nextLocation.y = locations[current].y;
 				}
 			}
 			else
 			{
 				nextLocation.y -= speed_t.y;
-				if ((nextLocation.y <= locations_t[current].y) &&
-					(locations_t[current].y <= GetLocation().y))
+				if ((nextLocation.y <= locations[current].y) &&
+					(locations[current].y <= GetLocation().y))
 				{
-					nextLocation.y = locations_t[current].y;
+					nextLocation.y = locations[current].y;
 				}
 			}
 		}
 
 
-		if (nextLocation.x != locations_t[current].x)
+		if (nextLocation.x != locations[current].x)
 		{
-			if (nextLocation.x < locations_t[current].x)
+			if (nextLocation.x < locations[current].x)
 			{
 				nextLocation.x += speed_t.x;
-				if ((GetLocation().x <= locations_t[current].x) &&
-					(locations_t[current].x <= nextLocation.x))
+				if ((GetLocation().x <= locations[current].x) &&
+					(locations[current].x <= nextLocation.x))
 				{
-					nextLocation.x = locations_t[current].x;
+					nextLocation.x = locations[current].x;
 				}
 			}
 			else
 			{
 				nextLocation.x -= speed_t.x;
-				if ((nextLocation.x <= locations_t[current].x) &&
-					(locations_t[current].x <= GetLocation().x))
+				if ((nextLocation.x <= locations[current].x) &&
+					(locations[current].x <= GetLocation().x))
 				{
-					nextLocation.x = locations_t[current].x;
+					nextLocation.x = locations[current].x;
 				}
 			}
 		}

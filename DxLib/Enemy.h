@@ -7,8 +7,6 @@
 #define D_ENEMY_HP 10
 #define D_ENEMY_POINT 100
 
-#define D_ENEMY_MOVELOOP_START 2
-#define D_ENEMY_MOVELOOP_END 3
 
 class Enemy :
     public CharaBase
@@ -18,12 +16,9 @@ private:
     int point;
 
     //移動用
-    float moveAngle = 0;
     bool moving = false;   //移動中ならtrue
-
-    int locationIndex;          //目的座標の添え字に使う
-    Location targetLocation;
-
+    float moveAngle=0;
+    int moveControlTime = 0;
 
 public:
     Enemy(Location* pLocation);
@@ -35,7 +30,7 @@ public:
     virtual void Move();
     float GetRadian(Location* pLocation);
     void MoveStraght(float radian);
-    void UpdateTargetLocation();
+    bool CheckArrival();
     void Hit() override {}
     void HpCheck() {}
     int GetPoint() {}
