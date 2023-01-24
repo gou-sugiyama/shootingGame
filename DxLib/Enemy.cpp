@@ -17,21 +17,21 @@ struct MoveInformation
 {
 	Location targetLocation_t;
 	int pattern;				//0:ˆÚ“® 1:~‚Ü‚é
-	int next;
-	int waitTimeFlame;
+	int waitTimeFrame;
 	int attackPattern;			//0:UŒ‚‚µ‚È‚¢@1:UŒ‚‚·‚é 2:ˆÚ“®‚µ‚È‚ª‚çUŒ‚
+	int next;
 };
 
-MoveInformation moveInfo[10] =
+MoveInformation moveInfo[5] =
 {
-	{   640,150,0,1,  0,0},
-	{1200.4,150,0,2,  0,0},
-	{     0,  0,1,3,180,1},
-	{  80.2,150,0,4,  0,2},
-	{     0,  0,1,5,180,1},
-	{1200.4,150,0,2,  0,1}
+	{   640, 150, 0,   0, 0, 1},
+	{1200.4, 150, 0,   0, 2, 2},
+	{     0,   0, 1, 300, 1, 3},
+	{  80.2, 150, 0,   0, 2, 4},
+	{     0,   0, 1, 300, 1, 1},
 
 };
+
 
 Location locations[3] =
 {
@@ -47,7 +47,8 @@ int next[3] =
 	1
 };
 
-int current = 1;
+int current = 0;
+int waitTime = 0;
 /////////////////////
 
 
@@ -85,15 +86,58 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
-	//Move_t();
-	if (location != locations[current])
+//	if (location != locations[current])
+//	{
+//		Move_t();
+//		//Move();
+//	}
+//	else
+//	{
+//		current = next[current];
+//	}
+
+	//ˆÚ“®ƒpƒ^[ƒ“‚É‰‚¶‚Ä“®‚«‚ğ•ª‚¯‚é
+	switch (moveInfo[current].pattern)
 	{
-		Move();
+		//ˆÚ“®
+	case 0:
+		Move_t();
+		break;
+
+		//~‚Ü‚é
+	case 1:
+		waitTime++;
+		if (moveInfo[current].waitTimeFrame <= waitTime)
+		{
+			waitTime = 0;
+			current = moveInfo[current].next;
+		}
+		break;
+
+
+	default:
+		break;
 	}
-	else
+
+	if (moveInfo[current].attackPattern != 0)
 	{
-		current = next[current];
+		//‚±‚±‚É’e‘Å‚Âˆ—
+		/*if(bulletCount < _ENEMY_BULLET_ALL_ && bullets[bulletCount] == nullptr)
+		{
+			if(moveInfo[current].attackpattern==1)
+			{
+				bullets[bulletsCount] = new StraightBullets(GetLocation(),Location{0,2});
+			}
+			else if (moveInfo[current].attackType == 2)
+			{
+				shotNum++;
+				bullets[bulletCount] = new CircleBullert(GetLocation(),2.f,(20 * shotNum));
+			}
+
+		}
+		*/
 	}
+
 }
 
 //-------------------------------
@@ -109,9 +153,11 @@ void Enemy::Draw()
 		int i = 0;
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.x : %.1lf", GetLocation().x);
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "location.y : %.1lf", GetLocation().y);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "locations[%d].x : %.1lf", current,locations[current].x);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "locations[%d].y : %.1lf", current,locations[current].y);
-		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "next[%d]:%d", current,next[current]);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "MoveInfo[%d] : pattern %d",current,moveInfo[current].pattern);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "MoveInfo[%d] : waitTimeFrame %d",current,moveInfo[current].waitTimeFrame);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "MoveInfo[%d] : attackPattern %d",current,moveInfo[current].attackPattern);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "MoveInfo[%d] : next %d",current,moveInfo[current].next);
+		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "waitTime : %d",waitTime);
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -218,54 +264,54 @@ void Enemy::Move_t()
 {
 	Location nextLocation = GetLocation();
 
-	if ((nextLocation.y == locations[current].y) &&
-		(nextLocation.x == locations[current].x))
+	if ((nextLocation.y == moveInfo[current].targetLocation_t.y) &&
+		(nextLocation.x == moveInfo[current].targetLocation_t.x))
 	{
-		current = next[current];
+		current = moveInfo[current].next;
 	}
 	else
 	{
-		if (nextLocation.y != locations[current].y)
+		if (nextLocation.y != moveInfo[current].targetLocation_t.y)
 		{
-			if (nextLocation.y < locations[current].y)
+			if (nextLocation.y < moveInfo[current].targetLocation_t.y)
 			{
 				nextLocation.y += speed_t.y;
-				if ((GetLocation().y <= locations[current].y) &&
-					(locations[current].y <= nextLocation.y))
+				if ((GetLocation().y <= moveInfo[current].targetLocation_t.y) &&
+					(moveInfo[current].targetLocation_t.y <= nextLocation.y))
 				{
-					nextLocation.y = locations[current].y;
+					nextLocation.y = moveInfo[current].targetLocation_t.y;
 				}
 			}
 			else
 			{
 				nextLocation.y -= speed_t.y;
-				if ((nextLocation.y <= locations[current].y) &&
-					(locations[current].y <= GetLocation().y))
+				if ((nextLocation.y <= moveInfo[current].targetLocation_t.y) &&
+					(moveInfo[current].targetLocation_t.y <= GetLocation().y))
 				{
-					nextLocation.y = locations[current].y;
+					nextLocation.y = moveInfo[current].targetLocation_t.y;
 				}
 			}
 		}
 
 
-		if (nextLocation.x != locations[current].x)
+		if (nextLocation.x != moveInfo[current].targetLocation_t.x)
 		{
-			if (nextLocation.x < locations[current].x)
+			if (nextLocation.x < moveInfo[current].targetLocation_t.x)
 			{
 				nextLocation.x += speed_t.x;
-				if ((GetLocation().x <= locations[current].x) &&
-					(locations[current].x <= nextLocation.x))
+				if ((GetLocation().x <= moveInfo[current].targetLocation_t.x) &&
+					(moveInfo[current].targetLocation_t.x <= nextLocation.x))
 				{
-					nextLocation.x = locations[current].x;
+					nextLocation.x = moveInfo[current].targetLocation_t.x;
 				}
 			}
 			else
 			{
 				nextLocation.x -= speed_t.x;
-				if ((nextLocation.x <= locations[current].x) &&
-					(locations[current].x <= GetLocation().x))
+				if ((nextLocation.x <= moveInfo[current].targetLocation_t.x) &&
+					(moveInfo[current].targetLocation_t.x <= GetLocation().x))
 				{
-					nextLocation.x = locations[current].x;
+					nextLocation.x = moveInfo[current].targetLocation_t.x;
 				}
 			}
 		}

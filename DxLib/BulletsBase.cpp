@@ -11,6 +11,19 @@ BulletsBase::BulletsBase()
 	radius = 0;
 
 }
+
+//----------------------------
+// コンストラクタ
+//----------------------------
+BulletsBase::BulletsBase(Location* pLocation, float* pRadius,int* damage, int* angle, float* speed)
+{
+	//SphereColliderの初期化
+	location.x = 0;
+	location.y = 0;
+	radius = 0;
+
+}
+
 //----------------------------
 // デストラクタ
 //----------------------------
