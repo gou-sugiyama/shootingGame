@@ -1,6 +1,9 @@
 #include "Enemy.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 Location moveLocation[4] =
 {
@@ -22,7 +25,7 @@ struct MoveInformation
 	int next;
 };
 
-MoveInformation moveInfo[5] =
+MoveInformation moveInfo[5];/* =
 {
 	{   640, 150, 0,   0, 0, 1},
 	{1200.4, 150, 0,   0, 2, 2},
@@ -30,7 +33,7 @@ MoveInformation moveInfo[5] =
 	{  80.2, 150, 0,   0, 2, 4},
 	{     0,   0, 1, 300, 1, 1},
 
-};
+};*/
 
 
 Location locations[3] =
@@ -49,6 +52,44 @@ int next[3] =
 
 int current = 0;
 int waitTime = 0;
+
+void InputCSV()
+{
+	std::string str_conma_buf;
+	std::ifstream ifs("MoveInformation/moveInformation.csv");
+	if (!ifs)
+	{
+		std::exit(1);
+		return;
+	}
+
+	std::string line;
+	for (int i = 0; !ifs.eof(); i++)
+	{
+		std::getline(ifs, line);
+		std::istringstream i_stream(line);
+
+		
+		std::getline(i_stream,str_conma_buf,',');
+		moveInfo[i].targetLocation_t.x = atof(str_conma_buf.c_str());
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].targetLocation_t.y = atof(str_conma_buf.c_str());
+
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].pattern = atoi(str_conma_buf.c_str());
+
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].waitTimeFrame = atof(str_conma_buf.c_str());
+
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].attackPattern = atof(str_conma_buf.c_str());
+
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].next = atof(str_conma_buf.c_str());
+
+	}
+	ifs.close();
+}
 /////////////////////
 
 
@@ -70,7 +111,7 @@ Enemy::Enemy(Location* pLocation)
 
 	SetMouseDispFlag(TRUE);
 
-
+	InputCSV();
 }
 
 //-------------------------------
