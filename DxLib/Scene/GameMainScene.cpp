@@ -1,5 +1,6 @@
 #include "../common.h"
 #include "GameMainScene.h"
+#include "GameOverScene.h"
 
 //--------------------------------
 // コンストラクタ
@@ -35,6 +36,24 @@ GameMainScene::~GameMainScene()
 //--------------------------------
 AbstractScene* GameMainScene::Update()
 {
+	switch (gameScene)
+	{
+	case D_GAMESCENE_MAIN:
+		GameMainUpdate();
+		break;
+	case D_GAMESCENE_GAMEOVER:
+		if(GameOverUpdate()) return new GameOverScene() ;
+		break;
+	}
+
+	return this;
+}
+
+//--------------------------------
+// ゲームメインの更新
+//--------------------------------
+void GameMainScene::GameMainUpdate()
+{
 	player->Update();
 	for (int i = 0; i < D_ENEMY_MAX; i++)
 	{
@@ -45,8 +64,23 @@ AbstractScene* GameMainScene::Update()
 	}
 
 	HitCheck();
+}
 
-	return this;
+//--------------------------------
+// ゲームオーバーの更新
+//--------------------------------
+bool GameMainScene::GameOverUpdate()
+{
+	static int timer = 120;
+	timer--;
+	if (timer < 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 //--------------------------------
@@ -66,15 +100,6 @@ void GameMainScene::Draw()const
 	//デバッグ用ブロック
 	{
 		int i = 0;
-		DrawString(0, 20 * i++, "GameMainScene", 0xFFFFFF);
-		if (debug)
-		{
-			DrawFormatString(0, 20 * i++, 0xFF00DD, "debug : TRUE");
-		}
-		else
-		{
-			DrawFormatString(0, 20 * i++, 0xFF00DD, "debug : FALSE" );
-		}
 
 		//距離を測る
 		Location distance = player->GetLocation() - enemy[0]->GetLocation();
@@ -100,7 +125,10 @@ void GameMainScene::Draw()const
 //--------------------------------
 void GameMainScene::HitCheck()
 {
-	debug = HitCheck_enemy_player();
+	if (HitCheck_enemy_player())
+	{
+		gameScene = D_GAMESCENE_GAMEOVER;
+	}
 }
 
 //--------------------------------
@@ -121,7 +149,7 @@ bool GameMainScene::HitCheck_enemy_player()
 			}
 			if (enemy[i]->HitSphere(player))
 			{
-				//isHit = true;
+				isHit = true;
 			}
 		}
 	}

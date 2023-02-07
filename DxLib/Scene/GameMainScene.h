@@ -4,12 +4,14 @@
 #include "../Enemy.h"
 
 #define D_ENEMY_MAX 10
+#define D_GAMESCENE_MAIN 0
+#define D_GAMESCENE_GAMEOVER 1
 
 class GameMainScene :
     public AbstractScene
 {
 private:
-    bool debug = false; //TODO:消す　デバッグ
+    int gameScene = D_GAMESCENE_MAIN;
 
     Player* player;
     Enemy* enemy[D_ENEMY_MAX];
@@ -22,6 +24,8 @@ public:
 
     //更新
     AbstractScene* Update()override;
+    void GameMainUpdate();
+    bool GameOverUpdate();
     //描画
     void Draw()const override;
 

@@ -7,6 +7,14 @@
 #define D_ENEMY_HP 10
 #define D_ENEMY_POINT 100
 
+struct MoveInformation
+{
+    Location targetLocation_t;
+    int pattern;				//0:ˆÚ“® 1:~‚Ü‚é
+    int waitTimeFrame;
+    int attackPattern;			//0:UŒ‚‚µ‚È‚¢@1:UŒ‚‚·‚é 2:ˆÚ“®‚µ‚È‚ª‚çUŒ‚
+    int next;
+};
 
 class Enemy :
     public CharaBase
@@ -19,6 +27,9 @@ private:
     bool moving = false;   //ˆÚ“®’†‚È‚çtrue
     float moveAngle=0;
     int moveControlTime = 0;
+    MoveInformation moveInfo[5];
+    int current = 0;
+    int waitTime = 0;
 
 public:
     Enemy(Location* pLocation);
@@ -37,6 +48,7 @@ public:
 
 
     /////////////////
+    void InputCSV();
     void Move_t();
     /////////////////
 };

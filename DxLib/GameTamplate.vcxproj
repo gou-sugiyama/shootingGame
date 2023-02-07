@@ -23,6 +23,7 @@
     <ClCompile Include="BulletsManager.cpp" />
     <ClCompile Include="CharaBase.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Scene\GameOverScene.cpp" />
     <ClCompile Include="ItemBase.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="CharaBase.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Scene\GameOverScene.h" />
     <ClInclude Include="ItemBase.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Player.h" />

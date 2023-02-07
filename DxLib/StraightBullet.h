@@ -4,7 +4,18 @@ class StraightBullet :public BulletsBase
 {
 private:
 	
-public:
 
+public:
+    //コンストラクタ
+    StraightBullet();
+    StraightBullet(Location Location, float radius,
+        int damage, int angle, float speed);
+    //デストラクタ
+    ~StraightBullet();
+
+    //更新
+    void Update() override;
+    //描画
+    void Draw()const override;
 };
 

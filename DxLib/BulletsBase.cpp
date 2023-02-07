@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "BulletsBase.h"
 
 //----------------------------
@@ -15,13 +17,16 @@ BulletsBase::BulletsBase()
 //----------------------------
 // コンストラクタ
 //----------------------------
-BulletsBase::BulletsBase(Location* pLocation, float* pRadius,int* damage, int* angle, float* speed)
+BulletsBase::BulletsBase(Location Location, float radius,int damage, int angle, float speed)
 {
 	//SphereColliderの初期化
-	location.x = 0;
-	location.y = 0;
-	radius = 0;
-
+	this->location.x = location.x;
+	this->location.y = location.y;
+	this->radius = radius;
+	//BulletsBaseの初期化
+	this->damage = damage;
+	this->radian = angle;
+	this->speed = speed;
 }
 
 //----------------------------
@@ -53,15 +58,10 @@ bool BulletsBase::isScreenOut()
 //----------------------------------------------
 // 移動 ベクトルからx,yの成分に分解して加算する
 //----------------------------------------------
-void BulletsBase::Move()
+void BulletsBase::MoveStraght()
 {
-	//角度が0なら真上に動く それ以外なら計算する
-	if (angle == 0)
-	{
-		location.y -= speed;
-	}
-	else
-	{
-		//TODO : ここに成分分解の計算
-	}
+	//x座標の移動
+	location.x += speed * cosf(radian);
+	//y座標の移動
+	location.y += speed * sinf(radian);
 }

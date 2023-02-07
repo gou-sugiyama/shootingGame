@@ -10,21 +10,20 @@ private:
     int damage = 0;
 protected:
     //ベクトル
-    int angle = 0;      //角度
+    int radian = 0;      //角度
     float speed = 0;    //量
 
 
 public:
     BulletsBase();
-    BulletsBase(Location* pLocation, float* pRadius,
-        int* damage, int* angle, float* speed);
-    //TODO:引数付きコンストラクタの中身を書く。
+    BulletsBase(Location Location, float radius,
+        int damage, int angle, float speed);
     ~BulletsBase();
 
     virtual void Update() = 0;
-    virtual void Draw() = 0;
+    virtual void Draw()const = 0;
     virtual bool isScreenOut();
-    void Move();
+    void MoveStraght();
     int GetDamage()
     {
         return damage;

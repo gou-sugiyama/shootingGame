@@ -5,93 +5,6 @@
 #include <string>
 #include <sstream>
 
-Location moveLocation[4] =
-{
-	{D_SCREEN_SIZE_X / 2,0},
-	{D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 5},
-	{D_SCREEN_SIZE_X - (D_ENEMY_RADIUS * 2),D_SCREEN_SIZE_Y / 5},
-	{(D_ENEMY_RADIUS * 2),D_SCREEN_SIZE_Y / 5}
-};
-
-
-
-////////////////////
-struct MoveInformation
-{
-	Location targetLocation_t;
-	int pattern;				//0:移動 1:止まる
-	int waitTimeFrame;
-	int attackPattern;			//0:攻撃しない　1:攻撃する 2:移動しながら攻撃
-	int next;
-};
-
-MoveInformation moveInfo[5];/* =
-{
-	{   640, 150, 0,   0, 0, 1},
-	{1200.4, 150, 0,   0, 2, 2},
-	{     0,   0, 1, 300, 1, 3},
-	{  80.2, 150, 0,   0, 2, 4},
-	{     0,   0, 1, 300, 1, 1},
-
-};*/
-
-
-Location locations[3] =
-{
-	{   640,150},
-	{1200.4,150},
-	{  80.2,150},
-};
-
-int next[3] =
-{
-	1,
-	2,
-	1
-};
-
-int current = 0;
-int waitTime = 0;
-
-void InputCSV()
-{
-	std::string str_conma_buf;
-	std::ifstream ifs("MoveInformation/moveInformation.csv");
-	if (!ifs)
-	{
-		std::exit(1);
-		return;
-	}
-
-	std::string line;
-	for (int i = 0; !ifs.eof(); i++)
-	{
-		std::getline(ifs, line);
-		std::istringstream i_stream(line);
-
-		
-		std::getline(i_stream,str_conma_buf,',');
-		moveInfo[i].targetLocation_t.x = atof(str_conma_buf.c_str());
-		std::getline(i_stream, str_conma_buf, ',');
-		moveInfo[i].targetLocation_t.y = atof(str_conma_buf.c_str());
-
-		std::getline(i_stream, str_conma_buf, ',');
-		moveInfo[i].pattern = atoi(str_conma_buf.c_str());
-
-		std::getline(i_stream, str_conma_buf, ',');
-		moveInfo[i].waitTimeFrame = atof(str_conma_buf.c_str());
-
-		std::getline(i_stream, str_conma_buf, ',');
-		moveInfo[i].attackPattern = atof(str_conma_buf.c_str());
-
-		std::getline(i_stream, str_conma_buf, ',');
-		moveInfo[i].next = atof(str_conma_buf.c_str());
-
-	}
-	ifs.close();
-}
-/////////////////////
-
 
 //-------------------------------
 // コンストラクタ
@@ -127,16 +40,6 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
-//	if (location != locations[current])
-//	{
-//		Move_t();
-//		//Move();
-//	}
-//	else
-//	{
-//		current = next[current];
-//	}
-
 	//移動パターンに応じて動きを分ける
 	switch (moveInfo[current].pattern)
 	{
@@ -200,11 +103,6 @@ void Enemy::Draw()
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "MoveInfo[%d] : next %d",current,moveInfo[current].next);
 		DrawFormatString(0, 200 + i++ * 20, 0xFF00DD, "waitTime : %d",waitTime);
 	}
-	for (int i = 0; i < 3; i++)
-	{
-		DrawCircle(locations[i].x, locations[i].y, radius, 0x55AAAA);
-	}
-
 #endif // DEBUG
 
 }
@@ -256,10 +154,10 @@ float Enemy::GetRadian(Location* pLocation)
 void Enemy::MoveStraght(float radian)
 {
 	Location nextLocation = GetLocation();
-	Location distance = locations[current] - GetLocation();
+	Location distance = moveInfo[current].targetLocation_t - GetLocation();
 
 	//y座標の移動
-	if (nextLocation.y != locations[current].y)
+	if (nextLocation.y != moveInfo[current].targetLocation_t.y)
 	{
 		if (fabsf(distance.y) > fabsf(speed * sinf(radian)))
 		{
@@ -267,12 +165,12 @@ void Enemy::MoveStraght(float radian)
 		}
 		else
 		{
-			nextLocation.y = locations[current].y;
+			nextLocation.y = moveInfo[current].targetLocation_t.y;
 		}
 	}
 
 	//x座標の移動
-	if (nextLocation.x != locations[current].x)
+	if (nextLocation.x != moveInfo[current].targetLocation_t.x)
 	{
 		if (fabsf(distance.x) > fabsf(speed * cosf(radian)))
 		{
@@ -280,7 +178,7 @@ void Enemy::MoveStraght(float radian)
 		}
 		else
 		{
-			nextLocation.x = locations[current].x;
+			nextLocation.x = moveInfo[current].targetLocation_t.x;
 		}
 	}
 
@@ -300,6 +198,46 @@ bool Enemy::CheckArrival()
 	return isTargetLocation;
 }
 
+//----------------------------------------
+// ファイル読み込み
+//----------------------------------------
+void Enemy::InputCSV()
+{
+	std::string str_conma_buf;
+	std::ifstream ifs("MoveInformation/moveInformation.csv");
+	if (!ifs)
+	{
+		std::exit(1);
+		return;
+	}
+
+	std::string line;
+	for (int i = 0; !ifs.eof(); i++)
+	{
+		std::getline(ifs, line);
+		std::istringstream i_stream(line);
+
+		//Location
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].targetLocation_t.x = atof(str_conma_buf.c_str());
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].targetLocation_t.y = atof(str_conma_buf.c_str());
+		//pattern
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].pattern = atoi(str_conma_buf.c_str());
+		//waitTimeFrame
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].waitTimeFrame = atof(str_conma_buf.c_str());
+		//attackPattern
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].attackPattern = atof(str_conma_buf.c_str());
+		//next
+		std::getline(i_stream, str_conma_buf, ',');
+		moveInfo[i].next = atof(str_conma_buf.c_str());
+
+	}
+	ifs.close();
+}
 
 void Enemy::Move_t()
 {
