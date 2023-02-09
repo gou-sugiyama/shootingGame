@@ -2,6 +2,8 @@
 #include "GameMainScene.h"
 #include "GameOverScene.h"
 
+Location default_location = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
+
 //--------------------------------
 // コンストラクタ
 //--------------------------------
@@ -14,7 +16,6 @@ GameMainScene::GameMainScene()
 	}
 	
 	//デバッグ用
-	//Location enemyLocation = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
 	Location enemyLocation = { 640,0 };
 	enemy[0] = new Enemy(&enemyLocation);
 }
@@ -55,6 +56,7 @@ AbstractScene* GameMainScene::Update()
 void GameMainScene::GameMainUpdate()
 {
 	player->Update();
+	//エネミーの更新
 	for (int i = 0; i < D_ENEMY_MAX; i++)
 	{
 		if (enemy[i] != nullptr)
@@ -62,6 +64,7 @@ void GameMainScene::GameMainUpdate()
 			enemy[i]->Update();
 		}
 	}
+
 
 	HitCheck();
 }
@@ -96,6 +99,7 @@ void GameMainScene::Draw()const
 			enemy[i]->Draw();
 		}
 	}
+
 
 	//デバッグ用ブロック
 	{

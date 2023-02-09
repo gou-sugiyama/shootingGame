@@ -1,4 +1,3 @@
-#include "common.h"
 #include "Player.h"
 
 //--------------------------------------
@@ -17,6 +16,7 @@ Player::Player()
 
 	//Player‚Ì‰Šú‰»
 	speed = D_PLAYER_SPEED;
+	bulletsManager = new BulletsManager();
 }
 
 //--------------------------------------
@@ -24,7 +24,7 @@ Player::Player()
 //--------------------------------------
 Player::~Player()
 {
-	;
+	delete bulletsManager;
 }
 
 //--------------------------------------
@@ -33,6 +33,11 @@ Player::~Player()
 void Player::Update()
 {
 	Controll();
+	bulletsManager->Update();
+	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
+	{
+		bulletsManager->ShotDefaultBullet(location, D_PLAYER_BULLET_RADIAN);
+	}
 }
 
 //--------------------------------------
@@ -40,7 +45,8 @@ void Player::Update()
 //--------------------------------------
 void Player::Draw()
 {
-	DrawCircle(location.x, location.y, radius, 0xFF007B);
+	DrawCircleAA(location.x, location.y, radius,10, 0xFF007B);
+	bulletsManager->Draw();
 }
 
 //---------------------------------

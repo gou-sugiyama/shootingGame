@@ -10,14 +10,14 @@ private:
     int damage = 0;
 protected:
     //ベクトル
-    int radian = 0;      //角度
+    float radian = 0;      //角度
     float speed = 0;    //量
 
 
 public:
     BulletsBase();
-    BulletsBase(Location Location, float radius,
-        int damage, int angle, float speed);
+    BulletsBase(Location location, float radius,
+        int damage, float radian, float speed);
     ~BulletsBase();
 
     virtual void Update() = 0;

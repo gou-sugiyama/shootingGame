@@ -1,3 +1,4 @@
+#include "common.h"
 #include "StraightBullet.h"
 
 //-----------------------------------
@@ -12,8 +13,8 @@ StraightBullet::StraightBullet():BulletsBase()
 // コンストラクタ
 //-----------------------------------
 StraightBullet::StraightBullet
-(Location Location, float radius, int damage, int angle, float speed)
-	:BulletsBase(Location,radius,damage,angle,speed)
+(Location Location, float radius, int damage, float radian, float speed)
+	:BulletsBase(Location,radius,damage, radian,speed)
 {
 
 }
@@ -31,7 +32,7 @@ StraightBullet::~StraightBullet()
 //-----------------------------------
 void StraightBullet::Update()
 {
-
+	MoveStraght();
 }
 
 //-----------------------------------
@@ -39,7 +40,7 @@ void StraightBullet::Update()
 //-----------------------------------
 void StraightBullet::Draw()const
 {
-
+	DrawCircleAA(location.x, location.y, radius, 10, 0xffffff);
 }
 
 //-----------------------------------

@@ -9,7 +9,7 @@ public:
     //コンストラクタ
     StraightBullet();
     StraightBullet(Location Location, float radius,
-        int damage, int angle, float speed);
+        int damage, float radian, float speed);
     //デストラクタ
     ~StraightBullet();
 
