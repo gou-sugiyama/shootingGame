@@ -4,7 +4,7 @@
 #define D_DEFAULT_BULLETS_MAX 1
 #define D_DEFAULT_DAMAGE 1
 #define D_DEFAULT_SPEED 1.5f
-#define D_DEFAULT_RADIUS 3
+#define D_DEFAULT_RADIUS 100
 class BulletsManager
 {
 private:

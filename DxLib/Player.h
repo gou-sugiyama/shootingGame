@@ -6,7 +6,7 @@
 //デフォルト値
 #define D_PLAYER_RADIUS 20
 #define D_PLAYER_SPEED 1
-#define D_PLAYER_BULLET_RADIAN -1.57f
+#define D_PLAYER_BULLET_RADIAN 0
 
 class Player :
     public CharaBase

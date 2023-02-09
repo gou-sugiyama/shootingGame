@@ -43,10 +43,10 @@ BulletsBase::~BulletsBase()
 bool BulletsBase::isScreenOut()
 {
 	//‰¡‚Ì”»’è
-	if (location.x < 0 - radius || D_SCREEN_SIZE_X + radius < location.x)
+	if (location.x < D_SCREEN_SIZE_X + radius && 0 - radius < location.x)
 	{
 		//c‚Ì”»’è
-		if (location.y < 0 - radius || D_SCREEN_SIZE_Y + radius < location.y)
+		if (location.y < D_SCREEN_SIZE_Y + radius && 0 - radius < location.y)
 		{
 			return false;
 		}

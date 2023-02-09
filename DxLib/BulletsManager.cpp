@@ -47,6 +47,10 @@ void BulletsManager::Draw()const
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		bullets[i]->Draw();
+		if (bullets[i]->isScreenOut())
+		{
+			DrawString(D_SCREEN_SIZE_X / 2, D_SCREEN_SIZE_Y / 2, "aaaaaaaaaaaaaaaaaaaaaaa", 0xffffff);
+		}
 	}
 }
 
