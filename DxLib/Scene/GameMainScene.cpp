@@ -164,10 +164,10 @@ bool GameMainScene::HitCheck_enemy_player()
 //--------------------------------
 // ƒLƒƒƒ‰‚Æ’e‚Ì“–‚½‚è”»’è
 //--------------------------------
-bool GameMainScene::HitCheck_chara_bullet(CharaBase* character, CharaBase* hasBullets)
+bool GameMainScene::HitCheck_chara_bullet(CharaBase* character, CharaBase* Bullets)
 {
 	bool isHit = false;
-	const vector<StraightBullet*> bullets = hasBullets->GetBullets();
+	const BulletsManager* bulletsManager = Bullets->GetBulletsManager();
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		if (character->HitSphere(bullets[i]))

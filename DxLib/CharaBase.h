@@ -17,9 +17,9 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void Hit() = 0;
-    const vector<StraightBullet*> GetBullets()const
+    const BulletsManager* GetBulletsManager()const
     {
-        return bullets->GetBullets();
+        return bullets;
     }
 };
 
