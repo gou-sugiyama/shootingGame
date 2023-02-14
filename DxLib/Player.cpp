@@ -16,7 +16,6 @@ Player::Player()
 
 	//Player‚Ì‰Šú‰»
 	speed = D_PLAYER_SPEED;
-	bulletsManager = new BulletsManager();
 }
 
 //--------------------------------------
@@ -24,7 +23,7 @@ Player::Player()
 //--------------------------------------
 Player::~Player()
 {
-	delete bulletsManager;
+
 }
 
 //--------------------------------------
@@ -33,10 +32,10 @@ Player::~Player()
 void Player::Update()
 {
 	Controll();
-	bulletsManager->Update();
+	bullets->Update();
 	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
 	{
-		bulletsManager->ShotDefaultBullet(location, D_PLAYER_BULLET_RADIAN);
+		bullets->ShotDefaultBullet(location, D_PLAYER_BULLET_RADIAN);
 	}
 }
 
@@ -45,8 +44,8 @@ void Player::Update()
 //--------------------------------------
 void Player::Draw()
 {
-	DrawCircleAA(location.x, location.y, radius,10, 0xFF007B);
-	bulletsManager->Draw();
+	DrawCircleAA(location.x, location.y, radius,30, 0xFF007B);
+	bullets->Draw();
 }
 
 //---------------------------------

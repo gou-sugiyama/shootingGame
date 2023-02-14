@@ -17,5 +17,7 @@ public:
     void Update() override;
     //•`‰æ
     void Draw()const override;
+    //‰½‚©‚É“–‚½‚Á‚½
+    void Hit() override;
 };
 

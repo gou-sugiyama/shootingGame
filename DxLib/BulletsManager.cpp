@@ -33,6 +33,7 @@ BulletsManager::~BulletsManager()
 //------------------------------------
 void BulletsManager::Update()
 {
+	DeleteBulletScreenOut();
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		bullets[i]->Update();
@@ -47,11 +48,17 @@ void BulletsManager::Draw()const
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		bullets[i]->Draw();
-		if (bullets[i]->isScreenOut())
-		{
-			DrawString(D_SCREEN_SIZE_X / 2, D_SCREEN_SIZE_Y / 2, "aaaaaaaaaaaaaaaaaaaaaaa", 0xffffff);
-		}
 	}
+}
+
+//------------------------------------
+// âΩÇ©Ç…ìñÇΩÇ¡ÇΩ
+//------------------------------------
+void BulletsManager::Hit(int bulletIndex)
+{
+	bullets[bulletIndex]->Hit();
+	delete bullets[bulletIndex];
+	bullets.erase(bullets.begin() + bulletIndex);
 }
 
 //------------------------------------
@@ -68,5 +75,17 @@ void BulletsManager::ShotDefaultBullet(Location location, float radian)
 }
 
 //------------------------------------
-// 
+// âÊñ äOÇÃíeÇÃçÌèú
 //------------------------------------
+void BulletsManager::DeleteBulletScreenOut()
+{
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		if (bullets[i]->isScreenOut())
+		{
+			delete bullets[i];
+			bullets.erase(bullets.begin() + i);
+		}
+	}
+}
+

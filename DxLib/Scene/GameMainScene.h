@@ -33,6 +33,7 @@ public:
     //“–‚½‚è”»’è‚ÌŒÄ‚Ño‚µ
     void HitCheck();
     bool HitCheck_enemy_player();
+    bool HitCheck_chara_bullet(CharaBase* character,CharaBase* Bullets);
 
 };
 
