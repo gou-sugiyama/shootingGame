@@ -10,14 +10,12 @@ Location default_location = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
 GameMainScene::GameMainScene()
 {
 	player = new Player();
+	
 	for (int i = 0; i < D_ENEMY_MAX; i++)
 	{
-		enemy[i] = nullptr;
+		Location location = { 200 + 100 * i,0 };
+		enemy.push_back(new Enemy(location));
 	}
-	
-	//デバッグ用
-	Location enemyLocation = { 640,0 };
-	enemy[0] = new Enemy(&enemyLocation);
 }
 
 //--------------------------------
@@ -26,9 +24,10 @@ GameMainScene::GameMainScene()
 GameMainScene::~GameMainScene()
 {
 	delete player;
-	for (int i = 0; i < D_ENEMY_MAX; i++)
+	for (int i = 0; i < enemy.size(); i++)
 	{
 		delete enemy[i];
+		enemy.clear();
 	}
 }
 
@@ -57,7 +56,7 @@ void GameMainScene::GameMainUpdate()
 {
 	player->Update();
 	//エネミーの更新
-	for (int i = 0; i < D_ENEMY_MAX; i++)
+	for (int i = 0; i < enemy.size(); i++)
 	{
 		if (enemy[i] != nullptr)
 		{
@@ -92,7 +91,7 @@ bool GameMainScene::GameOverUpdate()
 void GameMainScene::Draw()const
 {
 	player->Draw();
-	for (int i = 0; i < D_ENEMY_MAX; i++)
+	for (int i = 0; i < enemy.size(); i++)
 	{
 		if (enemy[i] != nullptr)
 		{
@@ -105,21 +104,8 @@ void GameMainScene::Draw()const
 	{
 		int i = 0;
 
-		//距離を測る
-		Location distance = player->GetLocation() - enemy[0]->GetLocation();
-		//二つのコリジョンが接したときの距離
-		float range = 30;
-
-		//距離がrange以下だったら当たってる
-		distance.x = pow((double)distance.x, 2.0);
-		distance.y = pow((double)distance.y, 2.0);
-
 
 		DrawFormatString(0, 20 * i++, 0xFF00DD, "player y : %.1lf",(player->GetLocation()).y);
-		DrawFormatString(0, 20 * i++, 0xFF00DD, "enemy[0] y : %.1lf",(enemy[0]->GetLocation()).y);
-		DrawFormatString(0, 20 * i++, 0xFF00DD, "distance x : %.1lf",distance.x);
-		DrawFormatString(0, 20 * i++, 0xFF00DD, "distance y : %.1lf",distance.y);
-
 	}
 
 }
@@ -133,6 +119,15 @@ void GameMainScene::HitCheck()
 	{
 		gameScene = D_GAMESCENE_GAMEOVER;
 	}
+
+	for (int i = 0; i < enemy.size(); i++)
+	{
+		if (HitCheck_chara_bullet(enemy[i], player))
+		{
+			delete enemy[i];
+			enemy.erase(enemy.begin() + i);
+		}
+	}
 }
 
 //--------------------------------
@@ -141,7 +136,7 @@ void GameMainScene::HitCheck()
 bool GameMainScene::HitCheck_enemy_player()
 {
 	bool isHit = false;
-	for (int i = 0; i < D_ENEMY_MAX; i++)
+	for (int i = 0; i < enemy.size(); i++)
 	{
 		//エネミーは正常か
 		if (enemy[i] != nullptr)
@@ -167,12 +162,15 @@ bool GameMainScene::HitCheck_enemy_player()
 bool GameMainScene::HitCheck_chara_bullet(CharaBase* character, CharaBase* Bullets)
 {
 	bool isHit = false;
-	const BulletsManager* bulletsManager = Bullets->GetBulletsManager();
-	for (int i = 0; i < bullets.size(); i++)
+	BulletsManager* bulletsManager = Bullets->GetBulletsManager();
+	for (int i = 0; i < bulletsManager->size(); i++)
 	{
-		if (character->HitSphere(bullets[i]))
+		if (character->HitSphere(bulletsManager->at(i)))
 		{
-			bullets[i]->Hit();
+			bulletsManager->Hit(i);
+			isHit = true;
 		}
 	}
+
+	return isHit;
 }

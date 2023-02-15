@@ -9,10 +9,10 @@
 //-------------------------------
 // コンストラクタ
 //-------------------------------
-Enemy::Enemy(Location* pLocation)
+Enemy::Enemy(Location pLocation)
 {
 	//SphereColliderの初期化
-	location = *pLocation;
+	location = pLocation;
 
 	radius = D_ENEMY_RADIUS;
 

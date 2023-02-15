@@ -17,7 +17,7 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void Hit() = 0;
-    const BulletsManager* GetBulletsManager()const
+    BulletsManager* GetBulletsManager()const
     {
         return bullets;
     }

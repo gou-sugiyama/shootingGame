@@ -14,7 +14,7 @@ private:
     int gameScene = D_GAMESCENE_MAIN;
 
     Player* player;
-    Enemy* enemy[D_ENEMY_MAX];
+    vector <Enemy*> enemy;
 
 public:
     //コンストラクタ

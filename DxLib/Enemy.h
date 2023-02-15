@@ -32,7 +32,7 @@ private:
     int waitTime = 0;
 
 public:
-    Enemy(Location* pLocation);
+    Enemy(Location pLocation);
     ~Enemy();
 
     void Update() override;

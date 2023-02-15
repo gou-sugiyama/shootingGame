@@ -26,7 +26,7 @@ public:
 	void Hit(int bulletIndex);
 	//マネージャー操作関数
 	int size()const { return bullets.size(); }
-	const BulletsBase* at(int bulletIndex)const { return bullets[bulletIndex]; }
+	BulletsBase* at(int bulletIndex)const { return bullets[bulletIndex]; }
 
 	//StraightBulletの生成
 	void ShotDefaultBullet(Location location,float radian);
@@ -35,6 +35,13 @@ public:
 	//画面外の弾の削除
 	void DeleteBulletScreenOut();
 
-
+	//
+	// TODO:バレットマネージャーに静的関数を作る
+	// コンストラクタをプライベートに持つ。
+	// キャラベースを引数に、ベクターを作って、キャラベースに基づくbulletsを作る。
+	// キャラが死んだらそのバレットを開放する。（sizeが0になった時）
+	// vector<vector<Bullets*>> bulletsこれの実現させる
+	// 
+	//
 };
 
