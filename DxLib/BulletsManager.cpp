@@ -1,4 +1,6 @@
 #include "BulletsManager.h"
+#include "Player.h"
+#include "Enemy.h"
 
 BulletsManager* BulletsManager::_Instance = 0;
 
@@ -81,6 +83,14 @@ void BulletsManager::Hit(int bulletIndex)
 	bullets[bulletIndex]->Hit();
 	delete bullets[bulletIndex];
 	bullets.erase(bullets.begin() + bulletIndex);
+}
+
+//------------------------------------
+// ’e‘q‚ÌŠm•Û
+//------------------------------------
+void BulletsManager::SetMagazine(CharaBase chara_base)
+{
+	
 }
 
 //------------------------------------

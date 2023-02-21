@@ -1,6 +1,8 @@
 #pragma once
 #include "common.h"
 #include "StraightBullet.h"
+#include "CharaBase.h"
+
 #define D_DEFAULT_BULLETS_MAX 90
 #define D_DEFAULT_DAMAGE 1
 #define D_DEFAULT_SPEED 1.5f
@@ -31,6 +33,7 @@ public:
 	//マネージャー操作関数
 	int size()const { return bullets.size(); }
 	BulletsBase* at(int bulletIndex)const { return bullets[bulletIndex]; }
+	void SetMagazine(CharaBase chara_base);
 
 	//StraightBulletの生成
 	void ShotDefaultBullet(Location location,float radian);
