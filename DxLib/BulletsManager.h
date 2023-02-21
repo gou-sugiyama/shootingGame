@@ -8,13 +8,17 @@
 class BulletsManager
 {
 private:
+	static BulletsManager* _Instance;
 	vector<StraightBullet*>bullets;
 	int bulletsMax = D_DEFAULT_BULLETS_MAX;
 
-public:
 	//コンストラクタ
 	BulletsManager();
-	BulletsManager(int bullets_max);
+
+public:
+	static BulletsManager* GetInstance();
+	static void Create();
+	static void Delete();
 	//デストラクタ
 	~BulletsManager();
 

@@ -9,6 +9,7 @@ Location default_location = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
 //--------------------------------
 GameMainScene::GameMainScene()
 {
+	BulletsManager::Create();
 	player = new Player();
 	
 	for (int i = 0; i < D_ENEMY_MAX; i++)
@@ -29,6 +30,7 @@ GameMainScene::~GameMainScene()
 		delete enemy[i];
 		enemy.clear();
 	}
+	BulletsManager::Delete();
 }
 
 //--------------------------------
@@ -161,16 +163,5 @@ bool GameMainScene::HitCheck_enemy_player()
 //--------------------------------
 bool GameMainScene::HitCheck_chara_bullet(CharaBase* character, CharaBase* Bullets)
 {
-	bool isHit = false;
-	BulletsManager* bulletsManager = Bullets->GetBulletsManager();
-	for (int i = 0; i < bulletsManager->size(); i++)
-	{
-		if (character->HitSphere(bulletsManager->at(i)))
-		{
-			bulletsManager->Hit(i);
-			isHit = true;
-		}
-	}
-
-	return isHit;
+	return false;
 }

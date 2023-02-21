@@ -32,10 +32,9 @@ Player::~Player()
 void Player::Update()
 {
 	Controll();
-	bullets->Update();
 	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
 	{
-		bullets->ShotDefaultBullet(location, D_PLAYER_BULLET_RADIAN);
+
 	}
 }
 
@@ -45,7 +44,6 @@ void Player::Update()
 void Player::Draw()
 {
 	DrawCircleAA(location.x, location.y, radius,30, 0xFF007B);
-	bullets->Draw();
 }
 
 //---------------------------------

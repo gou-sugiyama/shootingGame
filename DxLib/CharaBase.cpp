@@ -5,7 +5,7 @@
 //--------------------------------
 CharaBase::CharaBase()
 {
-	bullets = new BulletsManager();
+
 
 }
 
@@ -14,5 +14,5 @@ CharaBase::CharaBase()
 //--------------------------------
 CharaBase::~CharaBase()
 {
-	delete bullets;
+
 }

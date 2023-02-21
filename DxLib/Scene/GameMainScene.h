@@ -2,6 +2,7 @@
 #include "AbstractScene.h"
 #include "../Player.h"
 #include "../Enemy.h"
+#include "../BulletsManager.h"
 
 #define D_ENEMY_MAX 10
 #define D_GAMESCENE_MAIN 0

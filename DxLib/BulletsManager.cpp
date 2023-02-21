@@ -1,5 +1,7 @@
 #include "BulletsManager.h"
 
+BulletsManager* BulletsManager::_Instance = 0;
+
 //------------------------------------
 // コンストラクタ
 //------------------------------------
@@ -9,11 +11,31 @@ BulletsManager::BulletsManager()
 }
 
 //------------------------------------
-// コンストラクタ
+// インスタンスの取得
 //------------------------------------
-BulletsManager::BulletsManager(int bullets_max)
+BulletsManager* BulletsManager::GetInstance()
 {
-	bulletsMax = bullets_max;
+	return _Instance;
+}
+
+//------------------------------------
+// オブジェクトの生成
+//------------------------------------
+void BulletsManager::Create()
+{
+	if (_Instance == 0)
+	{
+		_Instance = new BulletsManager();
+	}
+}
+
+//------------------------------------
+// オブジェクトの削除
+//------------------------------------
+void BulletsManager::Delete()
+{
+	delete _Instance;
+	_Instance = 0;
 }
 
 //------------------------------------
