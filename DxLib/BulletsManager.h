@@ -2,6 +2,8 @@
 #include "common.h"
 #include "StraightBullet.h"
 #include "CharaBase.h"
+#include "Enemy.h"
+#include "Player.h"
 
 #define D_DEFAULT_BULLETS_MAX 90
 #define D_DEFAULT_DAMAGE 1
@@ -33,7 +35,8 @@ public:
 	//マネージャー操作関数
 	int size()const { return bullets.size(); }
 	BulletsBase* at(int bulletIndex)const { return bullets[bulletIndex]; }
-	void SetMagazine(CharaBase chara_base);
+	void SetMagazine(Enemy chara_base);
+	void SetMagazine(Player chara_base);
 
 	//StraightBulletの生成
 	void ShotDefaultBullet(Location location,float radian);
@@ -48,7 +51,6 @@ public:
 	// キャラベースを引数に、ベクターを作って、キャラベースに基づくbulletsを作る。
 	// キャラが死んだらそのバレットを開放する。（sizeが0になった時）
 	// vector<vector<Bullets*>> bulletsこれの実現させる
-	// 
 	//
 };
 

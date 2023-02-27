@@ -88,7 +88,15 @@ void BulletsManager::Hit(int bulletIndex)
 //------------------------------------
 // ’e‘q‚ÌŠm•Û
 //------------------------------------
-void BulletsManager::SetMagazine(CharaBase chara_base)
+void BulletsManager::SetMagazine(Enemy chara_base)
+{
+	
+}
+
+//------------------------------------
+// ’e‘q‚ÌŠm•Û
+//------------------------------------
+void BulletsManager::SetMagazine(Player chara_base)
 {
 	
 }
