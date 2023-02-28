@@ -5,8 +5,7 @@
 //--------------------------------
 CharaBase::CharaBase()
 {
-
-
+	bulletsManager = BulletsManager::GetInstance();
 }
 
 //--------------------------------

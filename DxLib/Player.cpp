@@ -34,7 +34,8 @@ void Player::Update()
 	Controll();
 	if (KeyManager::OnMouseClicked(MOUSE_INPUT_LEFT))
 	{
-
+		bulletsManager->
+			ShotDefaultBullet(GetLocation(), D_PLAYER_BULLET_RADIAN, PLAYER_BULLETS);
 	}
 }
 

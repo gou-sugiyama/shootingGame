@@ -1,5 +1,6 @@
 #pragma once
 #include "SphereCollider.h"
+#include "BulletsManager.h"
 
 class CharaBase :
     public SphereCollider
@@ -7,6 +8,7 @@ class CharaBase :
 protected:
     Location speed_t = { 1,1 };
     float speed = 1;
+    class BulletsManager* bulletsManager;
     //image
 
 public:

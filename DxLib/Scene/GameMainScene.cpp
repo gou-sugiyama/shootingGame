@@ -10,11 +10,13 @@ Location default_location = { D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y / 2 };
 GameMainScene::GameMainScene()
 {
 	BulletsManager::Create();
+	bulletsManager = BulletsManager::GetInstance();
+
 	player = new Player();
 	
 	for (int i = 0; i < D_ENEMY_MAX; i++)
 	{
-		Location location = { 200 + 100 * i,0 };
+		Location location = { 200.f + 100.f * i,0 };
 		enemy.push_back(new Enemy(location));
 	}
 }
@@ -30,7 +32,8 @@ GameMainScene::~GameMainScene()
 		delete enemy[i];
 		enemy.clear();
 	}
-	BulletsManager::Delete();
+	BulletsManager::Delete(); 
+
 }
 
 //--------------------------------
@@ -38,6 +41,8 @@ GameMainScene::~GameMainScene()
 //--------------------------------
 AbstractScene* GameMainScene::Update()
 {
+	bulletsManager->Update();
+
 	switch (gameScene)
 	{
 	case D_GAMESCENE_MAIN:
@@ -66,7 +71,7 @@ void GameMainScene::GameMainUpdate()
 		}
 	}
 
-
+	bulletsManager->size(0);
 	HitCheck();
 }
 
@@ -92,6 +97,7 @@ bool GameMainScene::GameOverUpdate()
 //--------------------------------
 void GameMainScene::Draw()const
 {
+	bulletsManager->Draw();
 	player->Draw();
 	for (int i = 0; i < enemy.size(); i++)
 	{
@@ -121,15 +127,8 @@ void GameMainScene::HitCheck()
 	{
 		gameScene = D_GAMESCENE_GAMEOVER;
 	}
-
-	for (int i = 0; i < enemy.size(); i++)
-	{
-		if (HitCheck_chara_bullet(enemy[i], player))
-		{
-			delete enemy[i];
-			enemy.erase(enemy.begin() + i);
-		}
-	}
+	HitCheck_enemy_bullet();
+	HitCheck_player_bullet();
 }
 
 //--------------------------------
@@ -159,9 +158,39 @@ bool GameMainScene::HitCheck_enemy_player()
 }
 
 //--------------------------------
-// ƒLƒƒƒ‰‚Æ’e‚Ì“–‚½‚è”»’è
+// ƒvƒŒƒCƒ„[‚Æ’e‚Ì“–‚½‚è”»’è
 //--------------------------------
-bool GameMainScene::HitCheck_chara_bullet(CharaBase* character, CharaBase* Bullets)
+bool GameMainScene::HitCheck_player_bullet()
 {
-	return false;
+	bool isHit = false;
+	for (int i = 0; i < bulletsManager->size(ENEMY_BULLETS); i++)
+	{
+		if (player->HitSphere(bulletsManager->at(ENEMY_BULLETS, i)))
+		{
+			bulletsManager->Hit(ENEMY_BULLETS, i);
+			isHit = true;
+		}
+	}
+	return isHit;
+}
+
+//--------------------------------
+// “G‚Æ’e‚Ì“–‚½‚è”»’è
+//--------------------------------
+bool GameMainScene::HitCheck_enemy_bullet()
+{
+	bool isHit = false;
+	for (int i = 0; i < enemy.size(); i++)
+	{
+		for (int j = 0; j < (bulletsManager->size(PLAYER_BULLETS)); j++)
+		{
+			if (enemy[i]->HitSphere(bulletsManager->at(PLAYER_BULLETS, j)))
+			{
+				bulletsManager->Hit(PLAYER_BULLETS, j);
+				isHit = true;
+			}
+		}
+	}
+
+	return isHit;
 }

@@ -3,13 +3,14 @@
 #include "Enemy.h"
 
 BulletsManager* BulletsManager::_Instance = 0;
-
+/*new StraightBullet({0,0}, 5, 5, -1.57f, 1);*/
 //------------------------------------
 // コンストラクタ
 //------------------------------------
 BulletsManager::BulletsManager()
-{
-
+{ 
+	bullets.push_back(vector<BulletsBase*>());
+	bullets.push_back(vector<BulletsBase*>());
 }
 
 //------------------------------------
@@ -36,6 +37,7 @@ void BulletsManager::Create()
 //------------------------------------
 void BulletsManager::Delete()
 {
+
 	delete _Instance;
 	_Instance = 0;
 }
@@ -47,7 +49,10 @@ BulletsManager::~BulletsManager()
 {
 	for (int i = 0; i < bullets.size(); i++)
 	{
-		delete bullets[i];
+		for (int j = 0; j < bullets[i].size(); j++)
+		{
+			delete bullets[i][j];
+		}
 	}
 	bullets.clear();
 }
@@ -60,7 +65,10 @@ void BulletsManager::Update()
 	DeleteBulletScreenOut();
 	for (int i = 0; i < bullets.size(); i++)
 	{
-		bullets[i]->Update();
+		for (int j = 0; j < bullets[i].size(); j++)
+		{
+			bullets[i][j]->Update();
+		}
 	}
 }
 
@@ -71,47 +79,33 @@ void BulletsManager::Draw()const
 {
 	for (int i = 0; i < bullets.size(); i++)
 	{
-		bullets[i]->Draw();
+		for (int j = 0; j < bullets[i].size(); j++)
+		{
+			bullets[i][j]->Draw();
+		}
 	}
 }
 
 //------------------------------------
 // 何かに当たった
 //------------------------------------
-void BulletsManager::Hit(int bulletIndex)
+void BulletsManager::Hit(int who_has ,int which)
 {
-	bullets[bulletIndex]->Hit();
-	delete bullets[bulletIndex];
-	bullets.erase(bullets.begin() + bulletIndex);
-}
-
-//------------------------------------
-// 弾倉の確保
-//------------------------------------
-void BulletsManager::SetMagazine(Enemy chara_base)
-{
-	
-}
-
-//------------------------------------
-// 弾倉の確保
-//------------------------------------
-void BulletsManager::SetMagazine(Player chara_base)
-{
-	
+	bullets[who_has][which]->Hit();
+	delete bullets[who_has][which];
+	bullets[who_has].erase(bullets[who_has].begin() + which);
 }
 
 //------------------------------------
 // StraightBulletの生成
 //------------------------------------
-void BulletsManager::ShotDefaultBullet(Location location, float radian)
+void BulletsManager::ShotDefaultBullet(Location location, float radian, int chara_type)
 {
-	if (bullets.size() < bulletsMax)
-	{
-		bullets.push_back
-		(new StraightBullet
-		(location, D_DEFAULT_RADIUS, D_DEFAULT_DAMAGE, radian, D_DEFAULT_SPEED));
-	}
+	if (chara_type > ENEMY_BULLETS)return;
+
+	bullets[chara_type].push_back(new StraightBullet
+	(location, D_DEFAULT_RADIUS, D_DEFAULT_DAMAGE, radian, D_DEFAULT_SPEED));
+
 }
 
 //------------------------------------
@@ -121,10 +115,13 @@ void BulletsManager::DeleteBulletScreenOut()
 {
 	for (int i = 0; i < bullets.size(); i++)
 	{
-		if (bullets[i]->isScreenOut())
+		for (int j = 0; j < bullets[i].size(); j++)
 		{
-			delete bullets[i];
-			bullets.erase(bullets.begin() + i);
+			if (bullets[i][j]->isScreenOut())
+			{
+				delete bullets[i][j];
+				bullets[i].erase(bullets[i].begin() + j);
+			}
 		}
 	}
 }

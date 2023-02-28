@@ -12,6 +12,7 @@ class GameMainScene :
     public AbstractScene
 {
 private:
+    BulletsManager* bulletsManager;
     int gameScene = D_GAMESCENE_MAIN;
 
     Player* player;
@@ -34,7 +35,8 @@ public:
     //“–‚½‚è”»’è‚ÌŒÄ‚Ño‚µ
     void HitCheck();
     bool HitCheck_enemy_player();
-    bool HitCheck_chara_bullet(CharaBase* character,CharaBase* Bullets);
+    bool HitCheck_player_bullet();
+    bool HitCheck_enemy_bullet();
 
 };
 
