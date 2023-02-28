@@ -9,20 +9,14 @@
 //-------------------------------
 // コンストラクタ
 //-------------------------------
-Enemy::Enemy(Location pLocation)
+Enemy::Enemy(Location location)
+	:CharaBase(location,ENEMY_RADIUS,ENEMY_SPEED)
 {
-	//SphereColliderの初期化
-	location = pLocation;
-
-	radius = D_ENEMY_RADIUS;
-
-	//CharaBaseの初期化
-
-	//Enemyの初期化
-	hp = D_ENEMY_HP;
-	point = D_ENEMY_POINT;
-
-	SetMouseDispFlag(TRUE);
+	hp = ENEMY_HP;
+	point = ENEMY_POINT;
+	attackInterval = DEFAULT_ATTACK_INTERVAL;
+	moveAngle = 0;
+	moveControlTime = 0;
 
 	InputCSV();
 }
@@ -40,6 +34,7 @@ Enemy::~Enemy()
 //-------------------------------
 void Enemy::Update()
 {
+	attackInterval--;
 	//移動パターンに応じて動きを分ける
 	switch (moveInfo[current].pattern)
 	{
@@ -65,9 +60,14 @@ void Enemy::Update()
 
 	if (moveInfo[current].attackPattern != 0)
 	{
-		//ここに弾打つ処理
-		/*if(bulletCount < _ENEMY_BULLET_ALL_ && bullets[bulletCount] == nullptr)
+		if (attackInterval < 0)
 		{
+			attackInterval = DEFAULT_ATTACK_INTERVAL;
+			bulletsManager->
+				ShotDefaultBullet(GetLocation(), ENEMY_BULLET_RADIAN, ENEMY_BULLETS);
+		}
+		//ここに弾打つ処理
+		/*
 			if(moveInfo[current].attackpattern==1)
 			{
 				bullets[bulletsCount] = new StraightBullets(GetLocation(),Location{0,2});
@@ -78,7 +78,6 @@ void Enemy::Update()
 				bullets[bulletCount] = new CircleBullert(GetLocation(),2.f,(20 * shotNum));
 			}
 
-		}
 		*/
 	}
 
@@ -196,6 +195,24 @@ bool Enemy::CheckArrival()
 
 
 	return isTargetLocation;
+}
+
+//----------------------------------------
+// ダメージを受ける
+//----------------------------------------
+void Enemy::ReceiveDamage(int damage)
+{
+	hp -= damage;
+}
+
+//-------------------------------
+// 生きてる？
+//-------------------------------
+bool Enemy::HpCheck()
+{
+	bool isAlive = true;
+	if (hp <= 0) isAlive = false;
+	return isAlive;
 }
 
 //----------------------------------------

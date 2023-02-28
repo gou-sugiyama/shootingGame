@@ -14,10 +14,10 @@ SphereCollider::SphereCollider()
 //----------------------
 // コンストラクタ
 //----------------------
-SphereCollider::SphereCollider(Location* pLocation, float* pRadius)
+SphereCollider::SphereCollider(Location location, float radius)
 {
-	location = *pLocation;
-	radius = *pRadius;
+	this->location = location;
+	this->radius = radius;
 }
 
 //----------------------

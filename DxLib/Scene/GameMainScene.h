@@ -4,7 +4,7 @@
 #include "../Enemy.h"
 #include "../BulletsManager.h"
 
-#define D_ENEMY_MAX 10
+#define D_ENEMY_MAX 1
 #define D_GAMESCENE_MAIN 0
 #define D_GAMESCENE_GAMEOVER 1
 

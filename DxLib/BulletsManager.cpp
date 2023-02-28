@@ -96,6 +96,14 @@ void BulletsManager::Hit(int who_has ,int which)
 	bullets[who_has].erase(bullets[who_has].begin() + which);
 }
 
+//-------------------------------
+// ベクター配列の大きさを返す
+//-------------------------------
+size_t BulletsManager::size(int who_has)const
+{
+	return bullets[who_has].size();
+}
+
 //------------------------------------
 // StraightBulletの生成
 //------------------------------------

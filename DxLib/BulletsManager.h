@@ -33,7 +33,7 @@ public:
 	//何かに当たった
 	void Hit(int who_has,int which);
 	//マネージャー操作関数
-	size_t size(int who_has)const { return bullets[who_has].size(); }
+	size_t size(int who_has)const;
 	BulletsBase* at(int who_has, int which)const { return bullets[who_has][which]; }
 
 	//StraightBulletの生成
@@ -42,13 +42,5 @@ public:
 
 	//画面外の弾の削除
 	void DeleteBulletScreenOut();
-
-	//
-	// TODO:バレットマネージャーに静的関数を作る
-	// コンストラクタをプライベートに持つ。
-	// キャラベースを引数に、ベクターを作って、キャラベースに基づくbulletsを作る。
-	// キャラが死んだらそのバレットを開放する。（sizeが0になった時）
-	// vector<vector<Bullets*>> bulletsこれの実現させる
-	//
 };
 

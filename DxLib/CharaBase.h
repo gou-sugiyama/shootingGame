@@ -13,6 +13,7 @@ protected:
 
 public:
     CharaBase();
+    CharaBase(Location location, float radius, float speed);
     ~CharaBase();
 	virtual void Update() = 0;
 	virtual void Draw() = 0;

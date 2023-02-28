@@ -127,8 +127,8 @@ void GameMainScene::HitCheck()
 	{
 		gameScene = D_GAMESCENE_GAMEOVER;
 	}
-	HitCheck_enemy_bullet();
 	HitCheck_player_bullet();
+	HitCheck_enemy_bullet();
 }
 
 //--------------------------------
@@ -168,6 +168,7 @@ bool GameMainScene::HitCheck_player_bullet()
 		if (player->HitSphere(bulletsManager->at(ENEMY_BULLETS, i)))
 		{
 			bulletsManager->Hit(ENEMY_BULLETS, i);
+			
 			isHit = true;
 		}
 	}
@@ -182,7 +183,7 @@ bool GameMainScene::HitCheck_enemy_bullet()
 	bool isHit = false;
 	for (int i = 0; i < enemy.size(); i++)
 	{
-		for (int j = 0; j < (bulletsManager->size(PLAYER_BULLETS)); j++)
+		for (int j = 0; j < bulletsManager->size(PLAYER_BULLETS); j++)
 		{
 			if (enemy[i]->HitSphere(bulletsManager->at(PLAYER_BULLETS, j)))
 			{
