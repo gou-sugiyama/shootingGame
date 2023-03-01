@@ -40,7 +40,7 @@ void StraightBullet::Update()
 //-----------------------------------
 void StraightBullet::Draw()const
 {
-	DrawCircleAA(location.x, location.y, radius, 20, 0xffffff);
+	DrawCircleAA(location.x, location.y, radius, 20, 0);
 }
 
 //-----------------------------------

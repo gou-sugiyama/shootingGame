@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackScreen.cpp" />
     <ClCompile Include="BulletsBase.cpp" />
     <ClCompile Include="BulletsManager.cpp" />
     <ClCompile Include="CharaBase.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Scene\GameClearScene.cpp" />
     <ClCompile Include="Scene\GameOverScene.cpp" />
     <ClCompile Include="ItemBase.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -37,11 +41,15 @@
     <ClCompile Include="StraightBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackScreen.h" />
     <ClInclude Include="BulletsBase.h" />
     <ClInclude Include="BulletsManager.h" />
     <ClInclude Include="CharaBase.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Scene\GameClearScene.h" />
     <ClInclude Include="Scene\GameOverScene.h" />
     <ClInclude Include="ItemBase.h" />
     <ClInclude Include="KeyManager.h" />

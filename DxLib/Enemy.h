@@ -9,6 +9,7 @@
 #define ENEMY_POINT 100
 #define ENEMY_BULLET_RADIAN 1.57
 #define DEFAULT_ATTACK_INTERVAL 45
+#define CIRCLE_ATTACK_INTERVAL 3
 
 struct MoveInformation
 {
@@ -25,6 +26,7 @@ class Enemy :
 private:
     int hp;
     int point;
+    int shotNum;
 
     //ˆÚ“®—p
     float moveAngle;
@@ -41,14 +43,19 @@ public:
     void Update() override;
     void Draw() override;
 
+    //‰º‚ÉŒ‚‚Â
+    void DefaultShot();
+    //8•ûŒü‚ÉŒ‚‚Â
+    void CircleShot();
+
     virtual void Move();
-    float GetRadian(Location* pLocation);
+    float GetRadian(Location location);
     void MoveStraght(float radian);
     bool CheckArrival();
     void Hit() override {}
     void ReceiveDamage(int damage);
     bool HpCheck();
-    int GetPoint() {}
+    int GetPoint() { return point; }
 
 
     /////////////////

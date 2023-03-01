@@ -3,20 +3,26 @@
 #include "../Player.h"
 #include "../Enemy.h"
 #include "../BulletsManager.h"
+#include "../EnemyManager.h"
+#include "../BackScreen.h"
+#include "../Item.h"
 
-#define D_ENEMY_MAX 1
-#define D_GAMESCENE_MAIN 0
-#define D_GAMESCENE_GAMEOVER 1
+#define GAMESCENE_MAIN 0
+#define GAMESCENE_GAMEOVER 1
+#define GAMESCENE_GAMECLEAR 2
 
 class GameMainScene :
     public AbstractScene
 {
 private:
     BulletsManager* bulletsManager;
-    int gameScene = D_GAMESCENE_MAIN;
+    EnemyManager* enemyManager;
+    int gameScene = GAMESCENE_MAIN;
 
     Player* player;
-    vector <Enemy*> enemy;
+    BackScreen* back;
+    vector <Enemy*>* enemy;
+    vector <Item*> item;
 
 public:
     //コンストラクタ

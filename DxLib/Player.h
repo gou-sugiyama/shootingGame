@@ -4,8 +4,8 @@
 
 
 //デフォルト値
-#define PLAYER_RADIUS 10
-#define PLAYER_SPEED 1
+#define PLAYER_RADIUS 25
+#define PLAYER_SPEED 1.5
 #define PLAYER_LIFE 10
 #define PLAYER_BULLET_RADIAN -1.57f
 
@@ -13,6 +13,7 @@ class Player :
     public CharaBase
 {
 private:
+    int images[2];
     int score;
     int life;
 
@@ -23,11 +24,13 @@ public:
 
     void Update() override;
     void Draw() override;
+    void DrawLife()const;
     void Controll(); //プレイヤーの操作
 
     void Hit() override {}
     void ReceiveDamage(int damage);
+    void Recovery(int amount);
     bool LifeCheck();
-    int GetScore() {}
+    void GetScore(int addScore) { score += addScore; }
 };
 

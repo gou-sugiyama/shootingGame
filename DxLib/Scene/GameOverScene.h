@@ -1,10 +1,11 @@
 #pragma once
 #include "AbstractScene.h"
+#include "../BackScreen.h"
 class GameOverScene :
     public AbstractScene
 {
-
-
+private:
+    BackScreen* back;
 
 public:
     //コンストラクタ

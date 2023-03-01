@@ -8,7 +8,7 @@
 //-------------------------------
 TitleScene::TitleScene()
 {
-	;
+	back = new BackScreen();
 }
 
 //----------------------------------
@@ -31,13 +31,16 @@ AbstractScene* TitleScene::Update()
 //----------------------------------
 void TitleScene::Draw()const 
 {
-	DrawString(0, 0, "TitleScene", 0xFFFFFF);
+	back->Draw();
+	SetFontSize(64);
+	int DrawWidth = GetDrawStringWidth("しゅーてぃんぐげーむ",-1);
+	DrawString((D_SCREEN_SIZE_X - DrawWidth) / 2, D_SCREEN_SIZE_Y / 4 , "しゅーてぃんぐげーむ", 0);
 
-
+	SetFontSize(20);
 	// 文字列の描画幅を取得
-	int DrawWidth = GetDrawStringWidth("SPACEキーでゲームスタート",-1);
+	DrawWidth = GetDrawStringWidth("SPACEキーでゲームスタート",-1);
 
 	// 画面中央に描画
-	DrawString((D_SCREEN_SIZE_X - DrawWidth) / 2, D_SCREEN_SIZE_Y / 3 * 2, "SPACEキーでゲームスタート", GetColor(255, 255, 255));
+	DrawString((D_SCREEN_SIZE_X - DrawWidth) / 2, D_SCREEN_SIZE_Y / 3 * 2, "SPACEキーでゲームスタート", 0);
 
 }

@@ -1,21 +1,21 @@
 #pragma once
 #include "AbstractScene.h"
 #include "../BackScreen.h"
-class TitleScene :
+class GameClearScene :
     public AbstractScene
 {
 private:
     BackScreen* back;
 public:
     //コンストラクタ
-    TitleScene();
+    GameClearScene();
     //デストラクタ
-    virtual ~TitleScene() { delete back; }
-
+    ~GameClearScene();
 
     //更新
     AbstractScene* Update()override;
     //描画
     void Draw()const override;
+
 };
 

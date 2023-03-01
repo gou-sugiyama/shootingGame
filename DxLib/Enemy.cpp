@@ -14,6 +14,7 @@ Enemy::Enemy(Location location)
 {
 	hp = ENEMY_HP;
 	point = ENEMY_POINT;
+	shotNum = 0;
 	attackInterval = DEFAULT_ATTACK_INTERVAL;
 	moveAngle = 0;
 	moveControlTime = 0;
@@ -58,27 +59,20 @@ void Enemy::Update()
 		break;
 	}
 
+	//パターンによって攻撃方法を分ける
 	if (moveInfo[current].attackPattern != 0)
 	{
 		if (attackInterval < 0)
 		{
-			attackInterval = DEFAULT_ATTACK_INTERVAL;
-			bulletsManager->
-				ShotDefaultBullet(GetLocation(), ENEMY_BULLET_RADIAN, ENEMY_BULLETS);
+			if (moveInfo[current].attackPattern == 1)
+			{
+				DefaultShot();
+			}
+			else if (moveInfo[current].attackPattern == 2)
+			{
+				CircleShot();
+			}
 		}
-		//ここに弾打つ処理
-		/*
-			if(moveInfo[current].attackpattern==1)
-			{
-				bullets[bulletsCount] = new StraightBullets(GetLocation(),Location{0,2});
-			}
-			else if (moveInfo[current].attackType == 2)
-			{
-				shotNum++;
-				bullets[bulletCount] = new CircleBullert(GetLocation(),2.f,(20 * shotNum));
-			}
-
-		*/
 	}
 
 }
@@ -90,7 +84,7 @@ void Enemy::Draw()
 {
 	DrawCircle(location.x, location.y, radius, 0xFF0000);
 
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 	{
 		int i = 0;
@@ -106,13 +100,33 @@ void Enemy::Draw()
 
 }
 
+//-------------------------------------
+// 下に撃つ
+//-------------------------------------
+void Enemy::DefaultShot()
+{
+	attackInterval = DEFAULT_ATTACK_INTERVAL;
+	bulletsManager->
+		ShotDefaultBullet(GetLocation(), ENEMY_BULLET_RADIAN, ENEMY_BULLETS);
+}
+
+//-------------------------------------
+// 8方向に撃つ
+//-------------------------------------
+void Enemy::CircleShot()
+{
+	attackInterval = CIRCLE_ATTACK_INTERVAL;
+	shotNum++;
+	bulletsManager->
+		ShotDefaultBullet(GetLocation(), (M_PI / 8) * shotNum, ENEMY_BULLETS);
+}
 
 //-------------------------------
 // 移動処理
 //-------------------------------
 void Enemy::Move()
 {
-	//MoveStraght(GetRadian(&locations[current]));
+	//MoveStraght(GetRadian(locations[current]));
 
 	MoveStraght(moveAngle);
 
@@ -136,10 +150,10 @@ void Enemy::Move()
 //-----------------------------------------------------------
 // 自分の位置から、引数の座標までの角度を求める（ラジアン）
 //-----------------------------------------------------------
-float Enemy::GetRadian(Location* pLocation)
+float Enemy::GetRadian(Location location)
 {
 	float rad = 999;
-	Location distance = *pLocation - location;
+	Location distance = location - this->location;
 
 	//ラジアンを求める
 	rad =  atan2f(distance.y, distance.x);
