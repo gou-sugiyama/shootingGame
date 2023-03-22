@@ -6,17 +6,17 @@
 //-----------------------------------
 StraightBullet::StraightBullet():BulletsBase()
 {
-
+	animTimer = 0;
 }
 
 //-----------------------------------
 // コンストラクタ
 //-----------------------------------
 StraightBullet::StraightBullet
-(Location Location, float radius, int damage, float radian, float speed)
-	:BulletsBase(Location,radius,damage, radian,speed)
+(Location Location,int* images, float radius, int damage, float radian, float speed)
+	:BulletsBase(Location,images,radius,damage, radian,speed)
 {
-
+	animTimer = 0;
 }
 
 //-----------------------------------
@@ -32,6 +32,7 @@ StraightBullet::~StraightBullet()
 //-----------------------------------
 void StraightBullet::Update()
 {
+	animTimer += 1.0 / 20;
 	MoveStraght();
 }
 
@@ -40,7 +41,8 @@ void StraightBullet::Update()
 //-----------------------------------
 void StraightBullet::Draw()const
 {
-	DrawCircleAA(location.x, location.y, radius, 20, 0);
+	DrawRotaGraphF(location.x, location.y, 1.0 / 200 * radius * 3, 0,
+		images[int(animTimer) % 2], TRUE);
 }
 
 //-----------------------------------

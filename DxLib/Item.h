@@ -1,5 +1,6 @@
 #pragma once
 #include "SphereCollider.h"
+#include "Player.h"
 class Item
 	:public SphereCollider
 {
@@ -14,5 +15,7 @@ public:
 	void Draw()const;
 
 	bool isScreenOut();
+
+	virtual void GetEffect(Player* player);
 };
 

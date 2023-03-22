@@ -24,6 +24,7 @@ Item::~Item()
 void Item::Update()
 {
 	location.y++;
+
 }
 
 //--------------------------------
@@ -50,4 +51,12 @@ bool Item::isScreenOut()
 	}
 
 	return true;
+}
+
+//-------------------------------
+// 獲得時の処理 デフォルトで回復
+//-------------------------------
+void Item::GetEffect(Player* player)
+{
+	player->Recovery(1);
 }

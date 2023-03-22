@@ -3,12 +3,12 @@
 class StraightBullet :public BulletsBase
 {
 private:
-	
+    float animTimer;
 
 public:
     //コンストラクタ
     StraightBullet();
-    StraightBullet(Location Location, float radius,
+    StraightBullet(Location Location,int* images, float radius,
         int damage, float radian, float speed);
     //デストラクタ
     ~StraightBullet();

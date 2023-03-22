@@ -18,13 +18,8 @@ GameMainScene::GameMainScene()
 	player = new Player();
 	back = new BackScreen();
 	
+	enemyManager->GetPlayerInstance(player);
 	enemy = enemyManager->GetEnemyInstance();
-	
-	for(int i= 0;i<10;i++)
-	{
-		Location location = { 200.f + 100.f * i,0 };
-		enemyManager->EnemySpawns(location);
-	}
 
 }
 
@@ -54,22 +49,6 @@ AbstractScene* GameMainScene::Update()
 {
 	bulletsManager->Update();
 	back->Update();
-	if (enemyManager->GetDestroyed() >= 10)
-	{
-		gameScene = GAMESCENE_GAMECLEAR;
-		enemyManager->InitDestroyed();
-	}
-	
-	//アイテムの更新と削除
-	for (int i = 0; i < item.size(); i++)
-	{
-		item[i]->Update();
-		if (item[i]->isScreenOut())
-		{
-			delete item[i];
-			item.erase(item.begin() + i);
-		}
-	}
 
 	switch (gameScene)
 	{
@@ -77,10 +56,10 @@ AbstractScene* GameMainScene::Update()
 		GameMainUpdate();
 		break;
 	case GAMESCENE_GAMEOVER:
-		if(GameOverUpdate()) return new GameOverScene() ;
+		if (TransitionTime()) return new GameOverScene(player->GetScore());
 		break;
 	case GAMESCENE_GAMECLEAR:
-		return new GameClearScene() ;
+		if (TransitionTime()) return new GameClearScene(player->GetScore());
 		break;
 	}
 
@@ -102,13 +81,30 @@ void GameMainScene::GameMainUpdate()
 		}
 	}
 
+	//アイテムの更新と削除
+	for (int i = 0; i < item.size(); i++)
+	{
+		item[i]->Update();
+		if (item[i]->isScreenOut())
+		{
+			delete item[i];
+			item.erase(item.begin() + i);
+		}
+	}
+
+	if (enemyManager->Update())
+	{
+		gameScene = GAMESCENE_GAMECLEAR;
+	}
+
+
 	HitCheck();
 }
 
 //--------------------------------
 // ゲームオーバーの更新
 //--------------------------------
-bool GameMainScene::GameOverUpdate()
+bool GameMainScene::TransitionTime()
 {
 	static int timer = 120;
 	timer--;
@@ -130,8 +126,8 @@ bool GameMainScene::GameOverUpdate()
 void GameMainScene::Draw()const
 {
 	back->Draw();
-	bulletsManager->Draw();
 	player->Draw();
+	bulletsManager->Draw();
 	for (int i = 0; i < enemy->size(); i++)
 	{
 		if ((*enemy)[i] != nullptr)
@@ -154,6 +150,7 @@ void GameMainScene::HitCheck()
 {
 	HitCheck_player_bullet();
 	HitCheck_enemy_bullet();
+	HitCheck_item();
 	if (player->LifeCheck() == false)
 	{
 		gameScene = GAMESCENE_GAMEOVER;
@@ -164,9 +161,8 @@ void GameMainScene::HitCheck()
 //--------------------------------
 // 敵とプレイヤーの当たり判定
 //--------------------------------
-bool GameMainScene::HitCheck_enemy_player()
+void GameMainScene::HitCheck_enemy_player()
 {
-	bool isHit = false;
 	for (int i = 0; i < enemy->size(); i++)
 	{
 		//エネミーは正常か
@@ -175,43 +171,34 @@ bool GameMainScene::HitCheck_enemy_player()
 			//当たっているか
 			if (player->HitSphere((*enemy)[i]))
 			{
-				isHit = true;
-			}
-			if ((*enemy)[i]->HitSphere(player))
-			{
-				isHit = true;
+
 			}
 		}
 	}
 
-	return isHit;
 }
 
 //--------------------------------
 // プレイヤーと弾の当たり判定
 //--------------------------------
-bool GameMainScene::HitCheck_player_bullet()
+void GameMainScene::HitCheck_player_bullet()
 {
-	bool isHit = false;
 	for (int i = 0; i < bulletsManager->size(ENEMY_BULLETS); i++)
 	{
 		auto it = bulletsManager->at(ENEMY_BULLETS, i);
 		if (player->HitSphere(it))
 		{
 			player->ReceiveDamage(it->GetDamage());
-			isHit = true;
 			bulletsManager->Hit(ENEMY_BULLETS, i);
 		}
 	}
-	return isHit;
 }
 
 //--------------------------------
 // 敵と弾の当たり判定
 //--------------------------------
-bool GameMainScene::HitCheck_enemy_bullet()
+void GameMainScene::HitCheck_enemy_bullet()
 {
-	bool isHit = false;
 	for (int i = 0; i < enemy->size(); i++)
 	{
 		for (int j = 0; j < bulletsManager->size(PLAYER_BULLETS); j++)
@@ -222,14 +209,27 @@ bool GameMainScene::HitCheck_enemy_bullet()
 				(*enemy)[i]->ReceiveDamage(it->GetDamage());
 				if ((*enemy)[i]->HpCheck() == false)
 				{
-					//20％の確率で生成する
-					if (!GetRand(4))item.push_back(new Item((*enemy)[i]->GetLocation(), 0));
+					//30％の確率で生成するaa
+					if (GetRand(99) <= 29)item.push_back(new Item((*enemy)[i]->GetLocation(), 0));
 				}
-				isHit = true;
 				bulletsManager->Hit(PLAYER_BULLETS, j);
 			}
 		}
 	}
+}
 
-	return isHit;
+//---------------------------------
+// アイテムとの当たり判定
+//---------------------------------
+void GameMainScene::HitCheck_item()
+{
+	for (int i = 0; i < item.size(); i++)
+	{
+		if (player->HitSphere(item[i]))
+		{
+			item[i]->GetEffect(player);
+			delete item[i];
+			item.erase(item.begin() + i);
+		}
+	}
 }

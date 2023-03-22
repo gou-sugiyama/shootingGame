@@ -7,8 +7,9 @@
 //---------------------------------
 // コンストラクタ
 //---------------------------------
-GameClearScene::GameClearScene()
+GameClearScene::GameClearScene(int score)
 {
+	this->score = score;
 	back = new BackScreen();
 }
 
@@ -51,6 +52,11 @@ void GameClearScene::Draw()const
 	DrawString((D_SCREEN_SIZE_X - DrawWidth) / 2, D_SCREEN_SIZE_Y / 4 * 1, "GameClear!!", 0);
 
 	SetFontSize(20);
+
+	DrawWidth = GetDrawStringWidth("Your score : 0000000", -1);
+	DrawFormatString((D_SCREEN_SIZE_X - DrawWidth) / 2,
+		D_SCREEN_SIZE_Y / 2, 0, "Your Score %7d", score);
+
 	// 文字列の描画幅を取得
 	DrawWidth = GetDrawStringWidth("SPACEキーでタイトルに戻る", -1);
 

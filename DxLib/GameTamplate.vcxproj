@@ -39,6 +39,7 @@
     <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="StraightBullet.cpp" />
+    <ClCompile Include="Troublesome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackScreen.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="StraightBullet.h" />
+    <ClInclude Include="Troublesome.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DxLib.rc" />

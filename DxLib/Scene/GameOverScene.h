@@ -6,10 +6,10 @@ class GameOverScene :
 {
 private:
     BackScreen* back;
-
+    int score;
 public:
     //コンストラクタ
-    GameOverScene();
+    GameOverScene(int score);
     //デストラクタ
     ~GameOverScene();
 

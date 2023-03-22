@@ -17,16 +17,14 @@ BulletsBase::BulletsBase()
 //----------------------------
 // コンストラクタ
 //----------------------------
-BulletsBase::BulletsBase(Location location, float radius,int damage, float radian, float speed)
+BulletsBase::BulletsBase(Location location, int* images, float radius,int damage, float radian, float speed)
+	:SphereCollider(location,radius)
 {
-	//SphereColliderの初期化
-	this->location.x = location.x;
-	this->location.y = location.y;
-	this->radius = radius;
 	//BulletsBaseの初期化
 	this->damage = damage;
 	this->radian = radian;
 	this->speed = speed;
+	this->images = images;
 }
 
 //----------------------------

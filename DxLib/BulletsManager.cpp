@@ -3,7 +3,6 @@
 #include "Enemy.h"
 
 BulletsManager* BulletsManager::_Instance = 0;
-/*new StraightBullet({0,0}, 5, 5, -1.57f, 1);*/
 //------------------------------------
 // コンストラクタ
 //------------------------------------
@@ -11,6 +10,10 @@ BulletsManager::BulletsManager()
 { 
 	bullets.push_back(vector<BulletsBase*>());
 	bullets.push_back(vector<BulletsBase*>());
+	shotsImages[1][0] = LoadGraph("images/enemy_shot1.png");
+	shotsImages[1][1] = LoadGraph("images/enemy_shot2.png");
+	shotsImages[0][0] = LoadGraph("images/player_shot.png");
+	shotsImages[0][1] = LoadGraph("images/player_shot.png");
 }
 
 //------------------------------------
@@ -37,7 +40,6 @@ void BulletsManager::Create()
 //------------------------------------
 void BulletsManager::Delete()
 {
-
 	delete _Instance;
 	_Instance = 0;
 }
@@ -112,7 +114,7 @@ void BulletsManager::ShotDefaultBullet(Location location, float radian, int char
 	if (chara_type > ENEMY_BULLETS)return;
 
 	bullets[chara_type].push_back(new StraightBullet
-	(location, D_DEFAULT_RADIUS, D_DEFAULT_DAMAGE, radian, D_DEFAULT_SPEED));
+	(location,shotsImages[chara_type], D_DEFAULT_RADIUS, D_DEFAULT_DAMAGE, radian, D_DEFAULT_SPEED));
 
 }
 

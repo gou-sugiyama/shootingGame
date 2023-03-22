@@ -4,11 +4,11 @@
 // コンストラクタ
 //--------------------------------------
 Player::Player()
-	:CharaBase({ D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y * 2 / 3 },
+	:CharaBase({ D_SCREEN_SIZE_X / 2,D_SCREEN_SIZE_Y * 2 / 3 },0,
 		PLAYER_RADIUS - 3, PLAYER_SPEED)
 {
-	images[0] = LoadGraph("images/player.png");
-	images[1] = LoadGraph("images/life.png");
+	image = LoadGraph("images/player.png");
+	lifeImage = LoadGraph("images/life.png");
 	score = 0;
 	life = PLAYER_LIFE;
 }
@@ -39,7 +39,7 @@ void Player::Update()
 //--------------------------------------
 void Player::Draw()
 {
-	DrawRotaGraphF(location.x, location.y, 1.0 / 200 * PLAYER_RADIUS * 2, 0, images[0], TRUE);
+	DrawRotaGraphF(location.x, location.y, 1.0 / 200 * PLAYER_RADIUS * 5.0, 0, image, TRUE);
 
 	DrawLife();
 }
@@ -54,7 +54,7 @@ void Player::DrawLife()const
 	int size = 50;
 	for (int i = 0; i < life; i++)
 	{
-		DrawRotaGraphF(x + size * i, y, 1.0 / 200 * size, 0, images[1], TRUE);
+		DrawRotaGraphF(x + size * i, y, 1.0 / 200 * size, 0, lifeImage, TRUE);
 	}
 
 }
@@ -86,7 +86,22 @@ void Player::Controll()
 		location.x -= PLAYER_SPEED;
 	}
 
-
+	if (location.x < 0)
+	{
+		location.x = 0;
+	}
+	if (D_SCREEN_SIZE_X < location.x)
+	{
+		location.x = D_SCREEN_SIZE_X;
+	}
+	if (location.y < 0)
+	{
+		location.y = 0;
+	}
+	if (D_SCREEN_SIZE_Y < location.y)
+	{
+		location.y = D_SCREEN_SIZE_Y;
+	}
 }
 
 //----------------------------------------

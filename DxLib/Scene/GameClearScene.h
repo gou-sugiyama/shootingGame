@@ -6,9 +6,10 @@ class GameClearScene :
 {
 private:
     BackScreen* back;
+    int score;
 public:
     //コンストラクタ
-    GameClearScene();
+    GameClearScene(int score);
     //デストラクタ
     ~GameClearScene();
 

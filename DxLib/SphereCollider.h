@@ -15,7 +15,7 @@ public:
 	//“–‚½‚è”»’è
 	bool HitSphere(SphereCollider* collider);
 
-	Location GetLocation() { return location; }
+	Location GetLocation()const;
 	void SetLocation(Location location) { this->location = location; }
 };
 

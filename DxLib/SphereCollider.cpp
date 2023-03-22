@@ -49,3 +49,8 @@ bool SphereCollider::HitSphere(SphereCollider* collider)
 	return isHit;
 
 }
+
+Location SphereCollider::GetLocation()const
+{
+	return location;
+}

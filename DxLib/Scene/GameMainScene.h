@@ -6,6 +6,7 @@
 #include "../EnemyManager.h"
 #include "../BackScreen.h"
 #include "../Item.h"
+#include "../Troublesome.h"
 
 #define GAMESCENE_MAIN 0
 #define GAMESCENE_GAMEOVER 1
@@ -24,6 +25,7 @@ private:
     vector <Enemy*>* enemy;
     vector <Item*> item;
 
+
 public:
     //コンストラクタ
     GameMainScene();
@@ -33,16 +35,17 @@ public:
     //更新
     AbstractScene* Update()override;
     void GameMainUpdate();
-    bool GameOverUpdate();
+    bool TransitionTime();
     //描画
     void Draw()const override;
 
 
     //当たり判定の呼び出し
     void HitCheck();
-    bool HitCheck_enemy_player();
-    bool HitCheck_player_bullet();
-    bool HitCheck_enemy_bullet();
+    void HitCheck_enemy_player();
+    void HitCheck_player_bullet();
+    void HitCheck_enemy_bullet();
+    void HitCheck_item();
 
 };
 

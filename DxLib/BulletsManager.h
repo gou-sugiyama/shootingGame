@@ -14,7 +14,8 @@ class BulletsManager
 private:
 	static BulletsManager* _Instance;
 	vector<vector<BulletsBase*>>bullets;
-	vector<vector<int>> t_int;
+
+	int shotsImages[2][2];
 
 	//コンストラクタ
 	BulletsManager();

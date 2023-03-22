@@ -12,11 +12,11 @@ protected:
     //ベクトル
     float radian = 0;      //角度
     float speed = 0;    //量
-
+    int* images;
 
 public:
     BulletsBase();
-    BulletsBase(Location location, float radius,
+    BulletsBase(Location location,int* images ,float radius,
         int damage, float radian, float speed);
     ~BulletsBase();
 

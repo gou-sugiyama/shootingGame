@@ -9,11 +9,29 @@
 //-------------------------------
 // コンストラクタ
 //-------------------------------
-Enemy::Enemy(Location location)
-	:CharaBase(location,ENEMY_RADIUS,ENEMY_SPEED)
+Enemy::Enemy(Location location,int image)
+	:CharaBase(location,image,ENEMY_RADIUS,ENEMY_SPEED)
 {
 	hp = ENEMY_HP;
 	point = ENEMY_POINT;
+	shotNum = 0;
+	isBoss = false;
+	attackInterval = DEFAULT_ATTACK_INTERVAL;
+	moveAngle = 0;
+	moveControlTime = 0;
+
+	InputCSV();
+}
+
+//-------------------------------
+// コンストラクタ
+//-------------------------------
+Enemy::Enemy(Location location, float radius, int image,  float speed, int hp, int point)
+	:CharaBase(location,image, radius, speed)
+{
+	isBoss = false;
+	this->hp = hp;
+	this->point = point;
 	shotNum = 0;
 	attackInterval = DEFAULT_ATTACK_INTERVAL;
 	moveAngle = 0;
@@ -27,7 +45,7 @@ Enemy::Enemy(Location location)
 //-------------------------------
 Enemy::~Enemy()
 {
-	;
+	
 }
 
 //-------------------------------
@@ -62,7 +80,7 @@ void Enemy::Update()
 	//パターンによって攻撃方法を分ける
 	if (moveInfo[current].attackPattern != 0)
 	{
-		if (attackInterval < 0)
+		if (attackInterval <= 0)
 		{
 			if (moveInfo[current].attackPattern == 1)
 			{
@@ -82,7 +100,8 @@ void Enemy::Update()
 //-------------------------------
 void Enemy::Draw()
 {
-	DrawCircle(location.x, location.y, radius, 0xFF0000);
+	DrawRotaGraphF(location.x, location.y, 1.0 / 200 * 10 * 5.0, 0, image, TRUE);
+
 
 //#define DEBUG
 #ifdef DEBUG
@@ -126,9 +145,7 @@ void Enemy::CircleShot()
 //-------------------------------
 void Enemy::Move()
 {
-	//MoveStraght(GetRadian(locations[current]));
-
-	MoveStraght(moveAngle);
+	MoveStraght();
 
 	moveControlTime++;
 	if (moveControlTime % 15 == 0)
@@ -164,51 +181,70 @@ float Enemy::GetRadian(Location location)
 //-----------------------------------------------------------
 // 角度に応じて真っすぐ移動する (ラジアン)
 //-----------------------------------------------------------
-void Enemy::MoveStraght(float radian)
+void Enemy::MoveStraght()
 {
-	Location nextLocation = GetLocation();
-	Location distance = moveInfo[current].targetLocation_t - GetLocation();
-
 	//y座標の移動
-	if (nextLocation.y != moveInfo[current].targetLocation_t.y)
-	{
-		if (fabsf(distance.y) > fabsf(speed * sinf(radian)))
-		{
-			nextLocation.y += (speed * sinf(radian));
-		}
-		else
-		{
-			nextLocation.y = moveInfo[current].targetLocation_t.y;
-		}
-	}
-
+	location.y += speed * sinf(moveAngle);
 	//x座標の移動
-	if (nextLocation.x != moveInfo[current].targetLocation_t.x)
-	{
-		if (fabsf(distance.x) > fabsf(speed * cosf(radian)))
-		{
-			nextLocation.x += speed * cosf(radian);
-		}
-		else
-		{
-			nextLocation.x = moveInfo[current].targetLocation_t.x;
-		}
-	}
-
-	SetLocation(nextLocation);
+	location.x += speed * cosf(moveAngle);
 }
 
 
 //----------------------------------------
-// 目的座標にいるか調べる
+// 目的座標までまっすぐ向かう
 //----------------------------------------
-bool Enemy::CheckArrival()
+bool Enemy::MoveStraghtToTarget()
 {
-	bool isTargetLocation = false;
+	bool isArrival = false;
+	Location nextLocation = location;
+
+	if (nextLocation.y != targetLocation.y)
+	{
+		nextLocation.y += speed * sinf(moveAngle);
+
+		//旧座標と新座標の間に目標座標があるとき、目標座標に固定する
+		if ((location.y <= targetLocation.y) &&
+			(targetLocation.y <= nextLocation.y))
+		{
+			nextLocation.y = targetLocation.y;
+		}
+
+		if ((nextLocation.y <= targetLocation.y) &&
+			(targetLocation.y <= location.y))
+		{
+			nextLocation.y = targetLocation.y;
+		}
+	}
 
 
+	if (nextLocation.x != targetLocation.x)
+	{
+		nextLocation.x += speed * cosf(moveAngle);
 
-	return isTargetLocation;
+		//旧座標と新座標の間に目標座標があるとき、目標座標に固定する
+		if ((location.x <= targetLocation.x) &&
+			(targetLocation.x <= nextLocation.x))
+		{
+			nextLocation.x = targetLocation.x;
+		}
+
+		if ((nextLocation.x <= targetLocation.x) &&
+			(targetLocation.x <= location.x))
+		{
+			nextLocation.x = targetLocation.x;
+		}
+	}
+
+
+	if (nextLocation == targetLocation)
+	{
+		isArrival = true;
+	}
+
+
+	SetLocation(nextLocation);
+
+	return isArrival;
 }
 
 //----------------------------------------
